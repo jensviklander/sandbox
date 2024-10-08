@@ -1,0 +1,35 @@
+.tableRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.evenRow {
+  background-color: var(--even-row-color);
+}
+
+.oddRow {
+  background-color: var(--odd-row-color);
+}
+
+.checkboxCell {
+  padding: 8px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.tableCell {
+  padding: 8px;
+  vertical-align: middle;
+  text-align: left;
+  flex-grow: 1;
+}
+
+.iconCell {
+  text-align: right;
+  padding-right: 8px;
+}
+
+.spacerCell {
+  flex-grow: 1;
+}

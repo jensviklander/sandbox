@@ -1,0 +1,18 @@
+.tableHeaderRow {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.checkboxCell {
+  padding: 8px;
+  box-sizing: border-box;
+  text-align: center;
+}
+
+.tableHeaderCell {
+  padding: 8px;
+  vertical-align: middle;
+  text-align: left;
+  flex-grow: 1;
+}
