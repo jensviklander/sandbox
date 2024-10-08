@@ -37,6 +37,9 @@ const sampleData: Person[] = [
   { id: "4", name: "Emily Brown", age: 28, profession: "QA Tester" },
   { id: "5", name: "Chris Evans", age: 40, profession: "System Administrator" },
   { id: "6", name: "Sara Parker", age: 32, profession: "Data Analyst" },
+  { id: "7", name: "James Taylor", age: 29, profession: "Developer" },
+  { id: "8", name: "Laura Green", age: 34, profession: "Scrum Master" },
+  { id: "9", name: "Robert King", age: 27, profession: "Product Owner" },
 ];
 
 const columns: ExtendedColumnDef<Person, unknown>[] = [

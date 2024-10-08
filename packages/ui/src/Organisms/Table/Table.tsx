@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { TableHeaderRow } from "../../Molecules/TableHeaderRow/TableHeaderRow";
 import { TableRow } from "../../Molecules/TableRow/TableRow";
 import { TableControlMenu } from "../../Molecules/TableControlMenu/TableControlMenu";
@@ -28,7 +28,6 @@ interface TableProps<T> {
   showDeleteButton?: boolean;
 }
 
-// TODO: Fix pagination
 export default function Table<T extends { id: string }>({
   data,
   columns,
@@ -46,7 +45,12 @@ export default function Table<T extends { id: string }>({
   const [sorting, setSorting] = useState<SortingState>([]);
   const [initialData] = useState<T[]>(data);
   const [tableData, setTableData] = useState<T[]>(data);
+  const [pageIndex, setPageIndex] = useState<number>(currentPage);
   const [searchQuery, setSearchQuery] = useState("");
+
+  const [totalPages, setTotalPages] = useState<number>(
+    Math.ceil(tableData.length / pageSize)
+  );
 
   const table = useReactTable({
     data: tableData,
@@ -54,7 +58,7 @@ export default function Table<T extends { id: string }>({
     getRowId: (row) => row.id,
     state: {
       sorting,
-      pagination: enablePagination ? { pageIndex: 0, pageSize } : undefined,
+      pagination: { pageIndex, pageSize },
     },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -65,10 +69,13 @@ export default function Table<T extends { id: string }>({
     manualPagination: !enablePagination,
   });
 
-  const handlePageChange = (pageIndex: number) => {
-    if (enablePagination) {
-      table.setPageIndex(pageIndex);
-    }
+  useEffect(() => {
+    setTotalPages(Math.ceil(tableData.length / pageSize));
+  }, [tableData, pageSize]);
+
+  const handlePageChange = (newPageIndex: number) => {
+    setPageIndex(newPageIndex);
+    onPageChange?.(newPageIndex);
   };
 
   const handleSelectAllChange = (checked: boolean) => {
@@ -94,9 +101,21 @@ export default function Table<T extends { id: string }>({
     let nextSortOrder: "asc" | "desc" | "none" = "none";
 
     if (isNumericColumn) {
-      nextSortOrder = currentSort?.desc ? "asc" : "desc";
+      if (!currentSort) {
+        nextSortOrder = "desc";
+      } else if (currentSort.desc) {
+        nextSortOrder = "asc";
+      } else {
+        nextSortOrder = "none";
+      }
     } else {
-      nextSortOrder = currentSort?.desc ? "none" : currentSort ? "desc" : "asc";
+      if (!currentSort) {
+        nextSortOrder = "asc";
+      } else if (!currentSort.desc) {
+        nextSortOrder = "desc";
+      } else {
+        nextSortOrder = "none";
+      }
     }
 
     const newSortingState: SortingState =
@@ -174,8 +193,8 @@ export default function Table<T extends { id: string }>({
       </table>
       {enablePagination && (
         <Pagination
-          currentPage={table.getState().pagination.pageIndex}
-          totalPages={table.getPageCount()}
+          currentPage={pageIndex}
+          totalPages={totalPages}
           onPageChange={handlePageChange}
         />
       )}
