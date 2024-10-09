@@ -22,6 +22,3 @@ Table:
 - Position of cells, default left but should also be able to center everything
 - Bulk removal button
 - Statistics i.e. total data
-
-Question: Should we rename Table component to DataGrid?
-Answer: ?
