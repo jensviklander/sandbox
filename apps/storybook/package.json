@@ -6,9 +6,8 @@
   "scripts": {
     "dev": "storybook dev -p 6006",
     "build": "storybook build",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "storybook": "storybook dev -p 6006"
+    "deploy": "gh-pages -d storybook-static",
+    "lint": "eslint ."
   },
   "dependencies": {
     "@repo/ui": "*",
@@ -29,6 +28,8 @@
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
+    "acorn": "^8.12.1",
+    "gh-pages": "^6.1.1",
     "globals": "^15.9.0",
     "storybook": "^8.3.3",
     "typescript": "^5.5.3",
