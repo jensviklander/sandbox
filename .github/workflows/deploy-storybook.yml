@@ -7,6 +7,7 @@ on:
     paths:
       - "apps/storybook/**"
       - "packages/ui/**"
+      - ".github/workflows/deploy-storybook.yml"
 
 jobs:
   build:
@@ -62,6 +63,8 @@ jobs:
         run: yarn install
 
       - name: Deploy to GitHub Pages
-        run: yarn deploy
+        run: |
+          cd apps/storybook
+          yarn deploy
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
