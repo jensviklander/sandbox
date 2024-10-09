@@ -1,6 +1,6 @@
 import "@repo/ui/global";
 import { useEffect } from "react";
-import type { Preview } from "@storybook/react";
+import type { Preview, StoryFn, StoryContext } from "@storybook/react";
 
 const applyThemeAndBackground = (theme: string) => {
   const root = document.documentElement;
@@ -44,16 +44,16 @@ const preview: Preview = {
   },
 };
 
-export const withTheme = (StoryFn: any, context: any) => {
+export const WithTheme = (StoryFn: StoryFn, context: StoryContext) => {
   const theme = context.globals.theme || "light";
 
   useEffect(() => {
     applyThemeAndBackground(theme);
   }, [theme]);
 
-  return StoryFn();
+  return StoryFn(StoryFn, context);
 };
 
-preview.decorators = [withTheme];
+preview.decorators = [WithTheme];
 
 export default preview;

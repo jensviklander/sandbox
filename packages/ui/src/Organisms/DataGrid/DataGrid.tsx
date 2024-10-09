@@ -55,7 +55,6 @@ export default function DataGrid<T extends { id: string }>({
   const [initialData] = useState<T[]>(data);
   const [tableData, setTableData] = useState<T[]>(data);
   const [pageIndex, setPageIndex] = useState<number>(currentPage);
-  const [searchQuery, setSearchQuery] = useState("");
 
   const [totalPages, setTotalPages] = useState<number>(
     Math.ceil(tableData.length / pageSize)
@@ -140,7 +139,6 @@ export default function DataGrid<T extends { id: string }>({
   };
 
   const handleSearch = (query: string) => {
-    setSearchQuery(query);
     const filteredData = initialData.filter((row) =>
       Object.values(row).join(" ").toLowerCase().includes(query.toLowerCase())
     );
