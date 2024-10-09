@@ -1,6 +1,6 @@
 import { Meta, StoryFn } from "@storybook/react";
 import React, { useState } from "react";
-import Table from "@repo/ui/table";
+import DataGrid from "@repo/ui/datagrid";
 import {
   ColumnDef as BaseColumnDef,
   AccessorFnColumnDef,
@@ -12,8 +12,8 @@ type ExtendedColumnDef<T, TValue> = BaseColumnDef<T, TValue> & {
 } & Partial<AccessorFnColumnDef<T, TValue>>;
 
 export default {
-  title: "Organisms/Table",
-  component: Table,
+  title: "Organisms/DataGrid",
+  component: DataGrid,
   argTypes: {
     enableSorting: { control: "boolean" },
     enablePagination: { control: "boolean" },
@@ -66,7 +66,7 @@ const columns: ExtendedColumnDef<Person, unknown>[] = [
   },
 ];
 
-const Template: StoryFn<React.ComponentProps<typeof Table<Person>>> = (
+const Template: StoryFn<React.ComponentProps<typeof DataGrid<Person>>> = (
   args
 ) => {
   const [selectedRows, setSelectedRows] = useState<string[]>([]);
@@ -82,7 +82,7 @@ const Template: StoryFn<React.ComponentProps<typeof Table<Person>>> = (
   };
 
   return (
-    <Table
+    <DataGrid
       {...args}
       data={sampleData}
       columns={columns}

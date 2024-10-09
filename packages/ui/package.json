@@ -7,7 +7,7 @@
     "./global": "./src/styles/global.css",
     "./icon": "./src/Atoms/Icon/Icon.tsx",
     "./iconbutton": "./src/Atoms/IconButton/IconButton.tsx",
-    "./table": "./src/Organisms/Table/Table.tsx"
+    "./datagrid": "./src/Organisms/DataGrid/DataGrid.tsx"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

@@ -1,7 +1,7 @@
 import { useState, useEffect } from "react";
-import { TableHeaderRow } from "../../Molecules/TableHeaderRow/TableHeaderRow";
-import { TableRow } from "../../Molecules/TableRow/TableRow";
-import { TableControlMenu } from "../../Molecules/TableControlMenu/TableControlMenu";
+import { DataGridHeaderRow } from "../../Molecules/DataGridHeaderRow/DataGridHeaderRow";
+import { DataGridRow } from "../../Molecules/DataGridRow/DataGridRow";
+import { DataGridControlMenu } from "../../Molecules/DataGridControlMenu/DataGridControlMenu";
 import { Pagination } from "../../Molecules/Pagination/Pagination";
 import {
   SortingState,
@@ -11,9 +11,9 @@ import {
   getPaginationRowModel,
 } from "@tanstack/react-table";
 import { ExtendedColumnDef } from "../../types/types";
-import styles from "./Table.module.css";
+import styles from "./DataGrid.module.css";
 
-interface TableProps<T> {
+interface DataGridProps<T> {
   data: T[];
   columns: ExtendedColumnDef<T, any>[];
   enableSorting?: boolean;
@@ -28,7 +28,16 @@ interface TableProps<T> {
   showDeleteButton?: boolean;
 }
 
-export default function Table<T extends { id: string }>({
+// TODO:
+// 1. Fix pagination styling, it skips when jumping pages
+// 2. Use button icon instead of current links in pagination
+// 3. Add hover style to IconButton, hover should be optional
+// 4. Fix pagination position options (left, center, right)
+// 5. Add statistics i.e. Total data:
+// 6. Add story with component for the DataGrid story. i.e. Input inside cell
+// 7. Setup github pages for storybook app
+// 8. Implement features from README
+export default function DataGrid<T extends { id: string }>({
   data,
   columns,
   enableSorting = false,
@@ -41,7 +50,7 @@ export default function Table<T extends { id: string }>({
   selectedRows = [],
   onSelectRow,
   showDeleteButton = false,
-}: TableProps<T>) {
+}: DataGridProps<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [initialData] = useState<T[]>(data);
   const [tableData, setTableData] = useState<T[]>(data);
@@ -154,10 +163,10 @@ export default function Table<T extends { id: string }>({
 
   return (
     <div className={styles.tableWrapper}>
-      {enableSearch && <TableControlMenu onSearch={handleSearch} />}
+      {enableSearch && <DataGridControlMenu onSearch={handleSearch} />}
       <table className={styles.table}>
         <thead>
-          <TableHeaderRow
+          <DataGridHeaderRow
             columns={columns}
             enableSorting={enableSorting}
             selectable={selectable}
@@ -171,7 +180,7 @@ export default function Table<T extends { id: string }>({
         </thead>
         <tbody>
           {table.getRowModel().rows.map((row) => (
-            <TableRow
+            <DataGridRow
               key={row.id}
               rowData={row.original}
               columns={columns}

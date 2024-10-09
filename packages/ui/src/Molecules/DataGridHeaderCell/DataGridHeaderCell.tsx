@@ -1,7 +1,7 @@
 import { IconButton } from "../../Atoms/IconButton/IconButton";
-import styles from "./TableHeaderCell.module.css";
+import styles from "./DataGridHeaderCell.module.css";
 
-interface TableHeaderCellProps {
+interface DataGridHeaderCellProps {
   label: string;
   sortable?: boolean;
   sortOrder: "asc" | "desc" | "none";
@@ -9,7 +9,7 @@ interface TableHeaderCellProps {
   width?: number;
 }
 
-export const TableHeaderCell: React.FC<TableHeaderCellProps> = ({
+export const DataGridHeaderCell: React.FC<DataGridHeaderCellProps> = ({
   label,
   sortable = false,
   sortOrder = "none",

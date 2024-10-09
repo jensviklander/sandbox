@@ -1,9 +1,9 @@
-import { TableHeaderCell } from "../TableHeaderCell/TableHeaderCell";
+import { DataGridHeaderCell } from "../DataGridHeaderCell/DataGridHeaderCell";
 import { Checkbox } from "../../Atoms/Checkbox/Checkbox";
 import { ExtendedColumnDef } from "../../types/types";
-import styles from "./TableHeaderRow.module.css";
+import styles from "./DataGridHeaderRow.module.css";
 
-interface TableHeaderRowProps<T> {
+interface DataGridHeaderRowProps<T> {
   columns: ExtendedColumnDef<T, any>[];
   enableSorting?: boolean;
   selectable?: boolean;
@@ -13,7 +13,7 @@ interface TableHeaderRowProps<T> {
   sorting?: { id: string; sortOrder: "asc" | "desc" | "none" }[];
 }
 
-export const TableHeaderRow = <T,>({
+export const DataGridHeaderRow = <T,>({
   columns,
   enableSorting = false,
   selectable = false,
@@ -21,7 +21,7 @@ export const TableHeaderRow = <T,>({
   onSortChange,
   isSelectAllChecked = false,
   sorting = [],
-}: TableHeaderRowProps<T>) => {
+}: DataGridHeaderRowProps<T>) => {
   const handleSelectAllChange = (checked: boolean) => {
     onSelectAll && onSelectAll(checked);
   };
@@ -41,7 +41,7 @@ export const TableHeaderRow = <T,>({
           sorting.find((s) => s.id === column.id)?.sortOrder || "none";
 
         return (
-          <TableHeaderCell
+          <DataGridHeaderCell
             key={column.id}
             label={String(column.header)}
             sortable={enableSorting}

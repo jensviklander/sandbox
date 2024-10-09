@@ -1,10 +1,13 @@
 import { Input } from "../../Atoms/Input/Input";
 
-interface TableControlMenuProps {
+interface DataGridControlMenuProps {
   onSearch: (query: string) => void;
 }
 
-export const TableControlMenu: React.FC<TableControlMenuProps> = ({
+// TODO:
+// Add styles instead of inline styling
+// Rename to something more fitting
+export const DataGridControlMenu: React.FC<DataGridControlMenuProps> = ({
   onSearch,
 }) => (
   <div style={{ display: "flex", alignItems: "center", gap: "10px" }}>

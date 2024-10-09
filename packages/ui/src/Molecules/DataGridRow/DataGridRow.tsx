@@ -1,10 +1,10 @@
-import { TableCell } from "../../Atoms/TableCell/TableCell";
+import { DataGridCell } from "../../Atoms/DataGridCell/DataGridCell";
 import { IconButton } from "../../Atoms/IconButton/IconButton";
 import { Checkbox } from "../../Atoms/Checkbox/Checkbox";
 import { ExtendedColumnDef } from "../../types/types";
-import styles from "./TableRow.module.css";
+import styles from "./DataGridRow.module.css";
 
-interface TableRowProps<T> {
+interface DataGridRowProps<T> {
   rowData: T;
   columns: ExtendedColumnDef<T, any>[];
   onDeleteRow: (rowId: string) => void;
@@ -15,7 +15,7 @@ interface TableRowProps<T> {
   showDeleteButton?: boolean;
 }
 
-export const TableRow = <T extends { id: string }>({
+export const DataGridRow = <T extends { id: string }>({
   rowData,
   columns,
   onDeleteRow,
@@ -24,7 +24,7 @@ export const TableRow = <T extends { id: string }>({
   isSelected = false,
   onSelectRow,
   showDeleteButton = true,
-}: TableRowProps<T>) => {
+}: DataGridRowProps<T>) => {
   const isEvenRow = rowIndex % 2 === 0;
 
   return (
@@ -51,9 +51,9 @@ export const TableRow = <T extends { id: string }>({
               : null;
 
         return (
-          <TableCell key={cellKey} width={width}>
+          <DataGridCell key={cellKey} width={width}>
             {cellValue ?? ""}
-          </TableCell>
+          </DataGridCell>
         );
       })}
 
