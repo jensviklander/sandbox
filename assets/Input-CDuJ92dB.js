@@ -1,0 +1,1 @@
+import{j as p}from"./jsx-runtime-DEdD30eg.js";const e="_input_qltp3_1",o={input:e},i=({placeholder:t,onChange:n})=>p.jsx("input",{type:"text",placeholder:t,onChange:s=>n(s.target.value),className:o.input});i.__docgenInfo={description:"",methods:[],displayName:"Input"};export{i as I};
