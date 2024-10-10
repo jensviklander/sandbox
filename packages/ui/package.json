@@ -4,10 +4,18 @@
   "private": true,
   "exports": {
     "./checkbox": "./src/Atoms/Checkbox/Checkbox.tsx",
+    "./datagrid": "./src/Organisms/DataGrid/DataGrid.tsx",
+    "./datagridcell": "./src/Atoms/DataGridCell/DataGridCell.tsx",
+    "./datagridcontrolmenu": "./src/Molecules/DataGridControlMenu/DataGridControlMenu.tsx",
+    "./datagridheadercell": "./src/Molecules/DataGridHeaderCell/DataGridHeaderCell.tsx",
+    "./datagridheaderrow": "./src/Molecules/DataGridHeaderRow/DataGridHeaderRow.tsx",
+    "./datagridrow": "./src/Molecules/DataGridRow/DataGridRow.tsx",
     "./global": "./src/styles/global.css",
     "./icon": "./src/Atoms/Icon/Icon.tsx",
     "./iconbutton": "./src/Atoms/IconButton/IconButton.tsx",
-    "./datagrid": "./src/Organisms/DataGrid/DataGrid.tsx"
+    "./input": "./src/Atoms/Input/Input.tsx",
+    "./link": "./src/Atoms/Link/Link.tsx",
+    "./types": "./src/types/types.ts"
   },
   "scripts": {
     "lint": "eslint . --max-warnings 0",

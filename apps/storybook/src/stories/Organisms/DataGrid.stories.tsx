@@ -40,7 +40,7 @@ type Person = {
 };
 
 const sampleData: Person[] = [
-  { id: "1", name: "John Doe", age: 30, profession: "Engineer" },
+  { id: "1", name: "John Doe", age: 30, profession: "Architect" },
   { id: "2", name: "Jane Smith", age: 25, profession: "Designer" },
   { id: "3", name: "Mike Johnson", age: 35, profession: "Fullstack Developer" },
   { id: "4", name: "Emily Brown", age: 28, profession: "QA Tester" },

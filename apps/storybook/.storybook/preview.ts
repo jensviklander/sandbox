@@ -28,7 +28,7 @@ const preview: Preview = {
       ],
     },
   },
-  // tags: ["autodocs"], // Uncomment for documentation but note that docs needs more fixes to get themes to work
+  tags: ["autodocs"],
   globalTypes: {
     theme: {
       name: "Theme",

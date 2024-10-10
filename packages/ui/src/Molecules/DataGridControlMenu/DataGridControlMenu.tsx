@@ -4,9 +4,6 @@ interface DataGridControlMenuProps {
   onSearch: (query: string) => void;
 }
 
-// TODO:
-// Add styles instead of inline styling
-// Rename to something more fitting
 export const DataGridControlMenu: React.FC<DataGridControlMenuProps> = ({
   onSearch,
 }) => (
