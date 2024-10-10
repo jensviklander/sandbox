@@ -42,13 +42,14 @@ type Person = {
 const sampleData: Person[] = [
   { id: "1", name: "John Doe", age: 30, profession: "Engineer" },
   { id: "2", name: "Jane Smith", age: 25, profession: "Designer" },
-  { id: "3", name: "Mike Johnson", age: 35, profession: "Developer" },
+  { id: "3", name: "Mike Johnson", age: 35, profession: "Fullstack Developer" },
   { id: "4", name: "Emily Brown", age: 28, profession: "QA Tester" },
   { id: "5", name: "Chris Evans", age: 40, profession: "System Administrator" },
   { id: "6", name: "Sara Parker", age: 32, profession: "Data Analyst" },
-  { id: "7", name: "James Taylor", age: 29, profession: "Developer" },
+  { id: "7", name: "James Taylor", age: 29, profession: "Backend Developer" },
   { id: "8", name: "Laura Green", age: 34, profession: "Scrum Master" },
   { id: "9", name: "Robert King", age: 27, profession: "Product Owner" },
+  { id: "10", name: "Jane Doe", age: 23, profession: "Frontend Developer" },
 ];
 
 const columns: ExtendedColumnDef<Person, unknown>[] = [
@@ -120,6 +121,7 @@ export const WithPagination = Template.bind({});
 WithPagination.args = {
   enablePagination: true,
   pageSize: 2,
+  paginationPosition: "center",
 };
 
 export const Selectable = Template.bind({});
@@ -139,6 +141,7 @@ AllFeaturesOn.args = {
   pageSize: 2,
   enableSearch: true,
   enablePagination: true,
+  paginationPosition: "right",
   selectable: true,
   showDeleteButton: true,
 };

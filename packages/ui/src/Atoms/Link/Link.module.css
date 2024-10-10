@@ -1,18 +1,28 @@
-a {
+.link {
   color: var(--primary-color);
   text-decoration: none;
   padding: 5px 10px;
   border-radius: var(--border-radius);
-  transition: background-color 0.2s ease;
+  transition:
+    background-color 0.2s ease,
+    color 0.2s ease;
+  cursor: pointer;
 }
 
-a:hover {
+.link:hover {
   background-color: var(--primary-color);
   color: var(--button-text-color);
 }
 
-a.disabled {
+.disabled {
   color: var(--secondary-color);
+  background-color: transparent;
   pointer-events: none;
   cursor: not-allowed;
+  opacity: 0.6;
+}
+
+.disabled:hover {
+  background-color: transparent;
+  color: var(--secondary-color);
 }

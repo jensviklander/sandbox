@@ -20,6 +20,7 @@ interface DataGridProps<T> {
   selectable?: boolean;
   enableSearch?: boolean;
   enablePagination?: boolean;
+  paginationPosition?: "left" | "center" | "right";
   pageSize?: number;
   currentPage?: number;
   onPageChange?: (pageIndex: number) => void;
@@ -29,15 +30,9 @@ interface DataGridProps<T> {
 }
 
 // TODO:
-// 1. Fix pagination styling, it skips when jumping pages
-// 2. Use button icon instead of current links in pagination
-// 3. Add hover style to IconButton, hover should be optional
-// 4. Fix pagination position options (left, center, right)
-// 5. When using search we need to do it from first page no?
-// 6. Add statistics i.e. Total data:
-// 7. Add story with component for the DataGrid story. i.e. Input inside cell
-// 8. Setup github pages for storybook app
-// 9. Implement features from README
+// 1. Add statistics i.e. Total data:
+// 2. Add story with component for the DataGrid story. i.e. Input inside cell
+// 3. Implement features from README
 export default function DataGrid<T extends { id: string }>({
   data,
   columns,
@@ -45,6 +40,7 @@ export default function DataGrid<T extends { id: string }>({
   selectable = false,
   enableSearch = false,
   enablePagination = false,
+  paginationPosition = "center",
   pageSize = 10,
   currentPage = 0,
   onPageChange,
@@ -143,7 +139,9 @@ export default function DataGrid<T extends { id: string }>({
     const filteredData = initialData.filter((row) =>
       Object.values(row).join(" ").toLowerCase().includes(query.toLowerCase())
     );
+
     setTableData(filteredData);
+    setPageIndex(0);
   };
 
   const transformedSorting = sorting.map((sort) => ({
@@ -200,11 +198,15 @@ export default function DataGrid<T extends { id: string }>({
         </tbody>
       </table>
       {enablePagination && (
-        <Pagination
-          currentPage={pageIndex}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
-        />
+        <div
+          className={`${styles.paginationWrapper} ${styles[paginationPosition]}`}
+        >
+          <Pagination
+            currentPage={pageIndex}
+            totalPages={totalPages}
+            onPageChange={handlePageChange}
+          />
+        </div>
       )}
     </div>
   );

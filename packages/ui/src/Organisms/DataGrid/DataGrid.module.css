@@ -9,3 +9,20 @@ table {
   background-color: var(--background-color);
   color: var(--text-color);
 }
+
+.paginationWrapper {
+  display: flex;
+  padding-top: 10px;
+}
+
+.paginationWrapper.left {
+  justify-content: flex-start;
+}
+
+.paginationWrapper.center {
+  justify-content: center;
+}
+
+.paginationWrapper.right {
+  justify-content: flex-end;
+}

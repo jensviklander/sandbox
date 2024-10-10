@@ -23,6 +23,7 @@ export const Link: React.FC<LinkProps> = ({
         if (!isDisabled) onClick(e);
       }}
       className={`${styles.link} ${className} ${isDisabled ? styles.disabled : ""}`}
+      aria-disabled={isDisabled}
     >
       {children}
     </a>
