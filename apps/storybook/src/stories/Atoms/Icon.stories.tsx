@@ -13,6 +13,14 @@ const iconMapping = {
 export default {
   title: "Atoms/Icon",
   component: Icon,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The Icon component displays a variety of icons for different purposes. It supports a selection of predefined icons that can be used to represent actions or data visually in the UI.",
+      },
+    },
+  },
   argTypes: {
     name: {
       control: "select",

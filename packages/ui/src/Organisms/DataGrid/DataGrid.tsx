@@ -33,10 +33,11 @@ interface DataGridProps<T> {
 // 2. Use button icon instead of current links in pagination
 // 3. Add hover style to IconButton, hover should be optional
 // 4. Fix pagination position options (left, center, right)
-// 5. Add statistics i.e. Total data:
-// 6. Add story with component for the DataGrid story. i.e. Input inside cell
-// 7. Setup github pages for storybook app
-// 8. Implement features from README
+// 5. When using search we need to do it from first page no?
+// 6. Add statistics i.e. Total data:
+// 7. Add story with component for the DataGrid story. i.e. Input inside cell
+// 8. Setup github pages for storybook app
+// 9. Implement features from README
 export default function DataGrid<T extends { id: string }>({
   data,
   columns,

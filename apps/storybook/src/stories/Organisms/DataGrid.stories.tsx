@@ -14,6 +14,15 @@ type ExtendedColumnDef<T, TValue> = BaseColumnDef<T, TValue> & {
 export default {
   title: "Organisms/DataGrid",
   component: DataGrid,
+  parameters: {
+    layout: "fullscreen",
+    docs: {
+      description: {
+        component:
+          "The DataGrid component displays tabular data with features like sorting, pagination, row selection, deletion, and customizable columns.",
+      },
+    },
+  },
   argTypes: {
     enableSorting: { control: "boolean" },
     enablePagination: { control: "boolean" },

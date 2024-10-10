@@ -13,6 +13,7 @@ const applyThemeAndBackground = (theme: string) => {
 
 const preview: Preview = {
   parameters: {
+    layout: "centered",
     controls: {
       matchers: {
         color: /(background|color)$/i,
@@ -27,6 +28,7 @@ const preview: Preview = {
       ],
     },
   },
+  // tags: ["autodocs"], // Uncomment for documentation but note that docs needs more fixes to get themes to work
   globalTypes: {
     theme: {
       name: "Theme",

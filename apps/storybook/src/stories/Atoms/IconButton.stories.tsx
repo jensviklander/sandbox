@@ -13,6 +13,14 @@ const iconMapping = {
 export default {
   title: "Atoms/IconButton",
   component: IconButton,
+  parameters: {
+    docs: {
+      description: {
+        component:
+          "The IconButton component combines an icon with a button to trigger actions. It allows users to easily select from predefined icons and can be used for operations like sorting, deleting, and other UI interactions.",
+      },
+    },
+  },
   argTypes: {
     icon: {
       control: {
