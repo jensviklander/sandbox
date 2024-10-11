@@ -14,6 +14,7 @@ import { ExtendedColumnDef } from "../../types/types";
 import styles from "./DataGrid.module.css";
 
 interface DataGridProps<T> {
+  title?: string;
   data: T[];
   columns: ExtendedColumnDef<T, any>[];
   enableSorting?: boolean;
@@ -30,10 +31,14 @@ interface DataGridProps<T> {
 }
 
 // TODO:
-// 1. Add statistics i.e. Total data:
-// 2. Add story with component for the DataGrid story. i.e. Input inside cell
-// 3. Implement features from README
+// 1. Add First and Last to pagination
+// 2. Add story for pagination component
+// 3. Add statistics i.e. Total data:
+// 4. Combine Pagination and DataGridStatistics into a DataGridFooter
+// 5. Add vitest for components
+// 6. Implement features from README
 export default function DataGrid<T extends { id: string }>({
+  title,
   data,
   columns,
   enableSorting = false,
@@ -79,6 +84,7 @@ export default function DataGrid<T extends { id: string }>({
   }, [tableData, pageSize]);
 
   const handlePageChange = (newPageIndex: number) => {
+    selectedRows.length = 0;
     setPageIndex(newPageIndex);
     onPageChange?.(newPageIndex);
   };
@@ -160,44 +166,61 @@ export default function DataGrid<T extends { id: string }>({
 
   return (
     <div className={styles.tableWrapper}>
-      {enableSearch && <DataGridControlMenu onSearch={handleSearch} />}
+      {title && <h2 className={styles.tableTitle}>{title}</h2>}
+      {enableSearch && (
+        <div className={styles.searchBar}>
+          <DataGridControlMenu onSearch={handleSearch} />
+        </div>
+      )}
+
       <table className={styles.table}>
-        <thead>
-          <DataGridHeaderRow
-            columns={columns}
-            enableSorting={enableSorting}
-            selectable={selectable}
-            sorting={transformedSorting}
-            onSelectAll={handleSelectAllChange}
-            onSortChange={handleSortChange}
-            isSelectAllChecked={
-              selectedRows.length === table.getRowModel().rows.length
-            }
-          />
-        </thead>
-        <tbody>
-          {table.getRowModel().rows.map((row) => (
-            <DataGridRow
-              key={row.id}
-              rowData={row.original}
+        {tableData.length > 0 && (
+          <thead>
+            <DataGridHeaderRow
               columns={columns}
-              onDeleteRow={handleDeleteRow}
-              showDeleteButton={showDeleteButton}
-              rowIndex={table.getRowModel().rows.indexOf(row)}
+              enableSorting={enableSorting}
               selectable={selectable}
-              isSelected={selectedRows.includes(row.id)}
-              onSelectRow={(checked) => {
-                if (checked && !selectedRows.includes(row.id)) {
-                  onSelectRow && onSelectRow(row.id, true);
-                } else if (!checked && selectedRows.includes(row.id)) {
-                  onSelectRow && onSelectRow(row.id, false);
-                }
-              }}
+              sorting={transformedSorting}
+              onSelectAll={handleSelectAllChange}
+              onSortChange={handleSortChange}
+              isSelectAllChecked={
+                selectedRows.length === table.getRowModel().rows.length
+              }
             />
-          ))}
+          </thead>
+        )}
+        <tbody>
+          {tableData.length > 0 ? (
+            table.getRowModel().rows.map((row) => (
+              <DataGridRow
+                key={row.id}
+                rowData={row.original}
+                columns={columns}
+                onDeleteRow={handleDeleteRow}
+                showDeleteButton={showDeleteButton}
+                rowIndex={table.getRowModel().rows.indexOf(row)}
+                selectable={selectable}
+                isSelected={selectedRows.includes(row.id)}
+                onSelectRow={(checked) => {
+                  if (checked && !selectedRows.includes(row.id)) {
+                    onSelectRow && onSelectRow(row.id, true);
+                  } else if (!checked && selectedRows.includes(row.id)) {
+                    onSelectRow && onSelectRow(row.id, false);
+                  }
+                }}
+              />
+            ))
+          ) : (
+            <tr>
+              <td colSpan={columns.length} className={styles.emptyTableMessage}>
+                No data available
+              </td>
+            </tr>
+          )}
         </tbody>
       </table>
-      {enablePagination && (
+
+      {enablePagination && tableData.length > 0 && (
         <div
           className={`${styles.paginationWrapper} ${styles[paginationPosition]}`}
         >

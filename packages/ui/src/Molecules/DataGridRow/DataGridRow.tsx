@@ -23,7 +23,7 @@ export const DataGridRow = <T extends { id: string }>({
   selectable = false,
   isSelected = false,
   onSelectRow,
-  showDeleteButton = true,
+  showDeleteButton = false,
 }: DataGridRowProps<T>) => {
   const isEvenRow = rowIndex % 2 === 0;
 

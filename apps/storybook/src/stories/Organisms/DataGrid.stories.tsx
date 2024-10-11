@@ -94,7 +94,7 @@ const Template: StoryFn<React.ComponentProps<typeof DataGrid<Person>>> = (
   return (
     <DataGrid
       {...args}
-      data={sampleData}
+      data={args.data || sampleData}
       columns={columns}
       selectable={args.selectable}
       selectedRows={selectedRows}
@@ -105,6 +105,11 @@ const Template: StoryFn<React.ComponentProps<typeof DataGrid<Person>>> = (
 
 export const Default = Template.bind({});
 Default.args = {};
+
+export const WithTitle = Template.bind({});
+WithTitle.args = {
+  title: "Team Members",
+};
 
 export const WithSorting = Template.bind({});
 WithSorting.args = {
@@ -135,8 +140,14 @@ Deletable.args = {
   showDeleteButton: true,
 };
 
+export const Empty = Template.bind({});
+Empty.args = {
+  data: [],
+};
+
 export const AllFeaturesOn = Template.bind({});
 AllFeaturesOn.args = {
+  title: "Team Members",
   enableSorting: true,
   pageSize: 2,
   enableSearch: true,

@@ -10,7 +10,7 @@ interface Person {
 }
 
 export default {
-  title: "Organisms/DataGrid/Molecules/DataGridHeaderRow",
+  title: "Molecules/DataGridHeaderRow",
   component: DataGridHeaderRow,
   parameters: {
     docs: {

@@ -2,7 +2,7 @@
 
 ## TODO:
 
-Add the following props:
+Add the following props to DataGrid:
 
 - borderless
 - loading
@@ -12,13 +12,20 @@ Add the following props:
 
 ### Features
 
-Table:
+DataGrid:
 
 - Filter dropdown with checkboxes
 - Indentation or position in cells
 - Grouping (Follow up on indentation)
-- Pagination position (left, center, right)
 - Radio button selection
 - Position of cells, default left but should also be able to center everything
 - Bulk removal button
 - Statistics i.e. total data
+
+Components:
+Form (With validation)
+Tooltip
+Dropdown
+RadioButton
+TreeSelector
+Chart (recharts?)

@@ -3,6 +3,16 @@
   overflow-x: auto;
 }
 
+.tableTitle {
+  font-size: var(--heading-font-size);
+  color: var(--heading-color);
+  padding: 0 8px;
+}
+
+.searchBar {
+  padding: 0 8px;
+}
+
 table {
   width: 100%;
   border-collapse: collapse;
@@ -25,4 +35,11 @@ table {
 
 .paginationWrapper.right {
   justify-content: flex-end;
+}
+
+.emptyTableMessage {
+  text-align: center;
+  padding: 20px;
+  font-size: var(--paragraph-font-size);
+  color: var(--secondary-color);
 }

@@ -2,7 +2,7 @@ import { Meta, StoryFn } from "@storybook/react";
 import { DataGridControlMenu } from "@repo/ui/datagridcontrolmenu";
 
 export default {
-  title: "Organisms/DataGrid/Molecules/DataGridControlMenu",
+  title: "Molecules/DataGridControlMenu",
   component: DataGridControlMenu,
   parameters: {
     docs: {

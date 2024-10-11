@@ -33,7 +33,7 @@ const columns: ExtendedColumnDef<Person, unknown>[] = [
 ];
 
 export default {
-  title: "Organisms/DataGrid/Molecules/DataGridRow",
+  title: "Molecules/DataGridRow",
   component: DataGridRow,
   parameters: {
     docs: {
@@ -100,21 +100,13 @@ export const Default = Template.bind({});
 Default.args = {
   rowData,
   columns,
-  rowIndex: 0,
-  selectable: false,
-  showDeleteButton: true,
-  onDeleteRow: (rowId: string) => console.log(`Delete row with ID: ${rowId}`),
 };
 
 export const Selectable = Template.bind({});
 Selectable.args = {
   rowData,
   columns,
-  rowIndex: 1,
   selectable: true,
-  isSelected: false,
-  showDeleteButton: true,
-  onDeleteRow: (rowId: string) => console.log(`Delete row with ID: ${rowId}`),
   onSelectRow: (checked: boolean) => console.log(`Row selected: ${checked}`),
 };
 
@@ -122,8 +114,6 @@ export const WithDeleteButton = Template.bind({});
 WithDeleteButton.args = {
   rowData,
   columns,
-  rowIndex: 2,
-  selectable: false,
   showDeleteButton: true,
   onDeleteRow: (rowId: string) => console.log(`Delete row with ID: ${rowId}`),
 };

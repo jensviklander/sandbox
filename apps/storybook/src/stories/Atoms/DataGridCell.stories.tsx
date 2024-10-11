@@ -2,7 +2,7 @@ import { Meta, StoryFn } from "@storybook/react";
 import { DataGridCell } from "@repo/ui/datagridcell";
 
 export default {
-  title: "Organisms/DataGrid/Atoms/DataGridCell",
+  title: "Atoms/DataGridCell",
   component: DataGridCell,
   parameters: {
     docs: {

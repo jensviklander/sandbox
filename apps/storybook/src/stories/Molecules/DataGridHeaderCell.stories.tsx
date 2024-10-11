@@ -2,7 +2,7 @@ import { Meta, StoryFn } from "@storybook/react";
 import { DataGridHeaderCell } from "@repo/ui/datagridheadercell";
 
 export default {
-  title: "Organisms/DataGrid/Molecules/DataGridHeaderCell",
+  title: "Molecules/DataGridHeaderCell",
   component: DataGridHeaderCell,
   parameters: {
     docs: {
