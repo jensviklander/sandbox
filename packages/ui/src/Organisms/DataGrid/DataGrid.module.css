@@ -43,3 +43,10 @@ table {
   font-size: var(--paragraph-font-size);
   color: var(--secondary-color);
 }
+
+.statistics {
+  padding: 10px 0;
+  font-size: var(--paragraph-font-size);
+  color: var(--secondary-color);
+  text-align: center;
+}

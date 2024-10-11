@@ -15,6 +15,7 @@
     "./iconbutton": "./src/Atoms/IconButton/IconButton.tsx",
     "./input": "./src/Atoms/Input/Input.tsx",
     "./link": "./src/Atoms/Link/Link.tsx",
+    "./pagination": "./src/Molecules/Pagination/Pagination.tsx",
     "./types": "./src/types/types.ts"
   },
   "scripts": {

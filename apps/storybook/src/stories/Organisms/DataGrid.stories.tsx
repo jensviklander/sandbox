@@ -140,6 +140,11 @@ Deletable.args = {
   showDeleteButton: true,
 };
 
+export const WithStatistics = Template.bind({});
+WithStatistics.args = {
+  showStatistics: true,
+};
+
 export const Empty = Template.bind({});
 Empty.args = {
   data: [],
@@ -152,7 +157,8 @@ AllFeaturesOn.args = {
   pageSize: 2,
   enableSearch: true,
   enablePagination: true,
-  paginationPosition: "right",
+  paginationPosition: "center",
   selectable: true,
   showDeleteButton: true,
+  showStatistics: true,
 };

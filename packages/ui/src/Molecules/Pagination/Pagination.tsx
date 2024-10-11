@@ -18,6 +18,14 @@ export const Pagination: React.FC<PaginationProps> = ({
     <div className={styles["pagination-controls"]}>
       <Link
         href="#"
+        onClick={() => onPageChange(0)}
+        isDisabled={currentPage === 0}
+      >
+        First
+      </Link>
+
+      <Link
+        href="#"
         onClick={() => onPageChange(currentPage - 1)}
         isDisabled={currentPage === 0}
       >
@@ -42,6 +50,14 @@ export const Pagination: React.FC<PaginationProps> = ({
         isDisabled={currentPage === totalPages - 1}
       >
         Next
+      </Link>
+
+      <Link
+        href="#"
+        onClick={() => onPageChange(totalPages - 1)}
+        isDisabled={currentPage === totalPages - 1}
+      >
+        Last
       </Link>
     </div>
   );

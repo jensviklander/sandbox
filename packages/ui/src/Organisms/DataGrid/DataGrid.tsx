@@ -28,15 +28,9 @@ interface DataGridProps<T> {
   selectedRows?: string[];
   onSelectRow?: (rowId: string, checked: boolean) => void;
   showDeleteButton?: boolean;
+  showStatistics?: boolean;
 }
 
-// TODO:
-// 1. Add First and Last to pagination
-// 2. Add story for pagination component
-// 3. Add statistics i.e. Total data:
-// 4. Combine Pagination and DataGridStatistics into a DataGridFooter
-// 5. Add vitest for components
-// 6. Implement features from README
 export default function DataGrid<T extends { id: string }>({
   title,
   data,
@@ -52,6 +46,7 @@ export default function DataGrid<T extends { id: string }>({
   selectedRows = [],
   onSelectRow,
   showDeleteButton = false,
+  showStatistics = false,
 }: DataGridProps<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [initialData] = useState<T[]>(data);
@@ -219,6 +214,12 @@ export default function DataGrid<T extends { id: string }>({
           )}
         </tbody>
       </table>
+
+      {showStatistics && (
+        <div className={styles.statistics}>
+          Total Rows: {initialData.length}
+        </div>
+      )}
 
       {enablePagination && tableData.length > 0 && (
         <div
