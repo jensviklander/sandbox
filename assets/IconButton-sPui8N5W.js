@@ -1,0 +1,1 @@
+import{j as t}from"./jsx-runtime-DEdD30eg.js";import{I as s}from"./Icon-DDJDM70X.js";const e="_button_1x2dt_1",c={button:e},r=({icon:o,onClick:n})=>t.jsx("button",{className:c.button,onClick:n,children:t.jsx(s,{name:o})});r.__docgenInfo={description:"",methods:[],displayName:"IconButton"};export{r as I};
