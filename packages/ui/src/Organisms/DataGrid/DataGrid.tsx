@@ -52,7 +52,6 @@ export default function DataGrid<T extends { id: string }>({
   const [initialData] = useState<T[]>(data);
   const [tableData, setTableData] = useState<T[]>(data);
   const [pageIndex, setPageIndex] = useState<number>(currentPage);
-
   const [totalPages, setTotalPages] = useState<number>(
     Math.ceil(tableData.length / pageSize)
   );
@@ -145,15 +144,6 @@ export default function DataGrid<T extends { id: string }>({
     setPageIndex(0);
   };
 
-  const transformedSorting = sorting.map((sort) => ({
-    id: sort.id,
-    sortOrder: sort.desc
-      ? ("desc" as "desc" | "asc" | "none")
-      : sorting.length
-        ? ("asc" as "asc" | "desc" | "none")
-        : ("none" as "asc" | "desc" | "none"),
-  }));
-
   const handleDeleteRow = (rowId: string) => {
     const updatedData = tableData.filter((row) => row.id !== rowId);
     setTableData(updatedData);
@@ -175,7 +165,7 @@ export default function DataGrid<T extends { id: string }>({
               columns={columns}
               enableSorting={enableSorting}
               selectable={selectable}
-              sorting={transformedSorting}
+              sorting={sorting}
               onSelectAll={handleSelectAllChange}
               onSortChange={handleSortChange}
               isSelectAllChecked={

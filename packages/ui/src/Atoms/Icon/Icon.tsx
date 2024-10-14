@@ -16,5 +16,7 @@ interface IconProps {
 
 export const Icon: React.FC<IconProps> = ({ name }) => {
   const SelectedIcon = iconMapping[name];
-  return SelectedIcon ? <SelectedIcon /> : null;
+  return SelectedIcon ? (
+    <SelectedIcon aria-label={name} data-testid={name} />
+  ) : null;
 };

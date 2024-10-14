@@ -1,8 +1,10 @@
 import { DataGridHeaderCell } from "../DataGridHeaderCell/DataGridHeaderCell";
 import { Checkbox } from "../../Atoms/Checkbox/Checkbox";
 import { ExtendedColumnDef } from "../../types/types";
+import { SortingState } from "@tanstack/react-table"; // Import SortingState from react-table
 import styles from "./DataGridHeaderRow.module.css";
 
+// Update the type to accept SortingState directly from react-table
 interface DataGridHeaderRowProps<T> {
   columns: ExtendedColumnDef<T, any>[];
   enableSorting?: boolean;
@@ -10,7 +12,7 @@ interface DataGridHeaderRowProps<T> {
   onSelectAll?: (checked: boolean) => void;
   onSortChange?: (columnId: string) => void;
   isSelectAllChecked?: boolean;
-  sorting?: { id: string; sortOrder: "asc" | "desc" | "none" }[];
+  sorting?: SortingState;
 }
 
 export const DataGridHeaderRow = <T,>({
@@ -37,15 +39,21 @@ export const DataGridHeaderRow = <T,>({
         </th>
       )}
       {columns.map((column) => {
-        const currentSort =
-          sorting.find((s) => s.id === column.id)?.sortOrder || "none";
+        const currentSort = sorting.find((s) => s.id === column.id);
+
+        const sortOrder =
+          currentSort?.desc === undefined
+            ? "none"
+            : currentSort?.desc
+              ? "desc"
+              : "asc";
 
         return (
           <DataGridHeaderCell
             key={column.id}
             label={String(column.header)}
             sortable={enableSorting}
-            sortOrder={currentSort}
+            sortOrder={sortOrder}
             onSort={() => column.id && onSortChange && onSortChange(column.id)}
             width={column.width}
           />

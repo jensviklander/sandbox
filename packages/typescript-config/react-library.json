@@ -4,5 +4,9 @@
   "extends": "./base.json",
   "compilerOptions": {
     "jsx": "react-jsx"
-  }
+  },
+  "env": {
+    "vitest/globals": true
+  },
+  "plugins": ["vitest"]
 }
