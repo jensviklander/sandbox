@@ -84,3 +84,9 @@ NonSortable.args = {
   sortable: false,
   width: 180,
 };
+
+export const Borderless = Template.bind({});
+Borderless.args = {
+  label: "Name",
+  borderless: true,
+};

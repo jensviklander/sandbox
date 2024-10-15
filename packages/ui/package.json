@@ -35,6 +35,7 @@
     "@types/react": "^18.2.61",
     "@types/react-dom": "^18.2.19",
     "@types/testing-library__jest-dom": "^6.0.0",
+    "@vitest/coverage-istanbul": "2.1.2",
     "@vitest/coverage-v8": "2.1.2",
     "c8": "^10.1.2",
     "eslint": "^8.57.0",

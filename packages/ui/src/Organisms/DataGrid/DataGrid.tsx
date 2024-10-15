@@ -29,6 +29,7 @@ interface DataGridProps<T> {
   onSelectRow?: (rowId: string, checked: boolean) => void;
   showDeleteButton?: boolean;
   showStatistics?: boolean;
+  borderless?: boolean;
 }
 
 export default function DataGrid<T extends { id: string }>({
@@ -47,6 +48,7 @@ export default function DataGrid<T extends { id: string }>({
   onSelectRow,
   showDeleteButton = false,
   showStatistics = false,
+  borderless = false,
 }: DataGridProps<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [initialData] = useState<T[]>(data);
@@ -171,6 +173,7 @@ export default function DataGrid<T extends { id: string }>({
               isSelectAllChecked={
                 selectedRows.length === table.getRowModel().rows.length
               }
+              borderless={borderless}
             />
           </thead>
         )}
@@ -193,6 +196,7 @@ export default function DataGrid<T extends { id: string }>({
                     onSelectRow && onSelectRow(row.id, false);
                   }
                 }}
+                borderless={borderless}
               />
             ))
           ) : (

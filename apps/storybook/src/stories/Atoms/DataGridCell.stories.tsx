@@ -32,3 +32,9 @@ export const Default = Template.bind({});
 Default.args = {
   children: "Cell content",
 };
+
+export const Borderless = Template.bind({});
+Borderless.args = {
+  children: "Cell content",
+  borderless: true,
+};

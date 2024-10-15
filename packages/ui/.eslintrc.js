@@ -3,17 +3,14 @@ module.exports = {
   root: true,
   extends: [
     "@repo/eslint-config/react-internal.js",
-    "plugin:vitest/recommended",
+    // "plugin:vitest/recommended",
   ],
   parser: "@typescript-eslint/parser",
   parserOptions: {
     project: "./tsconfig.lint.json",
     tsconfigRootDir: __dirname,
   },
-  env: {
-    "vitest-globals/env": true,
-  },
-  plugins: ["@typescript-eslint", "vitest"],
+  plugins: ["@typescript-eslint"],
   rules: {
     "no-unused-vars": "off",
     "@typescript-eslint/no-unused-vars": [
@@ -25,5 +22,14 @@ module.exports = {
         caughtErrors: "none",
       },
     ],
+  },
+  ignorePatterns: ["vitest.setup.ts"],
+  globals: {
+    afterEach: "readonly",
+    describe: "readonly",
+    it: "readonly",
+    expect: "readonly",
+    vi: "readonly",
+    screen: "off",
   },
 };

@@ -3,6 +3,11 @@
   text-align: left;
   vertical-align: middle;
   white-space: nowrap;
+  border: 1px solid var(--border-color);
+}
+
+.borderless {
+  border: none;
 }
 
 .headerContent {

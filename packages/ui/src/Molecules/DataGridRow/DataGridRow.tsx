@@ -13,6 +13,7 @@ interface DataGridRowProps<T> {
   isSelected?: boolean;
   onSelectRow?: (checked: boolean) => void;
   showDeleteButton?: boolean;
+  borderless?: boolean;
 }
 
 export const DataGridRow = <T extends { id: string }>({
@@ -24,6 +25,7 @@ export const DataGridRow = <T extends { id: string }>({
   isSelected = false,
   onSelectRow,
   showDeleteButton = false,
+  borderless = false,
 }: DataGridRowProps<T>) => {
   const isEvenRow = rowIndex % 2 === 0;
 
@@ -32,7 +34,9 @@ export const DataGridRow = <T extends { id: string }>({
       className={`${styles.tableRow} ${isEvenRow ? styles.evenRow : styles.oddRow}`}
     >
       {selectable && (
-        <td className={styles.checkboxCell}>
+        <td
+          className={`${styles.checkboxCell} ${borderless ? styles.borderless : ""}`}
+        >
           <Checkbox
             checked={isSelected}
             onChange={(checked) => onSelectRow && onSelectRow(checked)}
@@ -51,16 +55,22 @@ export const DataGridRow = <T extends { id: string }>({
               : null;
 
         return (
-          <DataGridCell key={cellKey} width={width}>
+          <DataGridCell key={cellKey} width={width} borderless={borderless}>
             {cellValue ?? ""}
           </DataGridCell>
         );
       })}
 
-      <td className={styles.spacerCell}></td>
+      <td
+        className={`${styles.spacerCell} ${
+          !showDeleteButton && !borderless ? styles.spacerWithRightBorder : ""
+        } ${borderless ? styles.borderless : ""}`}
+      ></td>
 
       {showDeleteButton && (
-        <td className={styles.iconCell}>
+        <td
+          className={`${styles.iconCell} ${borderless ? styles.borderless : ""}`}
+        >
           <IconButton icon="trash" onClick={() => onDeleteRow(rowData.id)} />
         </td>
       )}

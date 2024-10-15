@@ -1,5 +1,6 @@
 import { render, screen } from "@testing-library/react";
 import { DataGridCell } from "./DataGridCell";
+import styles from "./DataGridCell.module.css";
 
 describe("DataGridCell Component", () => {
   it("should render the cell with provided children", () => {
@@ -58,5 +59,54 @@ describe("DataGridCell Component", () => {
 
     cell = container.querySelector("td");
     expect(cell).toHaveStyle("width: 200px");
+  });
+
+  it("should apply the borderless class when borderless is true", () => {
+    const { container } = render(
+      <table>
+        <tbody>
+          <tr>
+            <DataGridCell width={150} borderless={true}>
+              Borderless Content
+            </DataGridCell>
+          </tr>
+        </tbody>
+      </table>
+    );
+
+    const cell = container.querySelector("td");
+    expect(cell).toHaveClass(styles.borderless);
+  });
+
+  it("should not apply the borderless class when borderless is false", () => {
+    const { container } = render(
+      <table>
+        <tbody>
+          <tr>
+            <DataGridCell width={150} borderless={false}>
+              Regular Content
+            </DataGridCell>
+          </tr>
+        </tbody>
+      </table>
+    );
+
+    const cell = container.querySelector("td");
+    expect(cell).not.toHaveClass(styles.borderless);
+  });
+
+  it("should not apply the borderless class when borderless is not provided", () => {
+    const { container } = render(
+      <table>
+        <tbody>
+          <tr>
+            <DataGridCell width={150}>Regular Content</DataGridCell>
+          </tr>
+        </tbody>
+      </table>
+    );
+
+    const cell = container.querySelector("td");
+    expect(cell).not.toHaveClass(styles.borderless);
   });
 });

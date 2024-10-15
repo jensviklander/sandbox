@@ -54,7 +54,6 @@ export default {
   },
 } as Meta;
 
-// Using Person type for columns instead of any
 const columns: ExtendedColumnDef<Person, unknown>[] = [
   {
     id: "name",
@@ -103,9 +102,9 @@ Sortable.args = {
   columns,
   enableSorting: true,
   sorting: [
-    { id: "name", sortOrder: "asc" },
-    { id: "age", sortOrder: "none" },
-    { id: "profession", sortOrder: "none" },
+    { id: "name", desc: false },
+    { id: "age", desc: false },
+    { id: "profession", desc: false },
   ],
 };
 
@@ -116,8 +115,14 @@ SortableAndSelectable.args = {
   selectable: true,
   isSelectAllChecked: false,
   sorting: [
-    { id: "name", sortOrder: "asc" },
-    { id: "age", sortOrder: "none" },
-    { id: "profession", sortOrder: "none" },
+    { id: "name", desc: false },
+    { id: "age", desc: false },
+    { id: "profession", desc: true },
   ],
+};
+
+export const Borderless = Template.bind({});
+Borderless.args = {
+  columns,
+  borderless: true,
 };

@@ -129,3 +129,10 @@ SelectableAndDeletable.args = {
   onDeleteRow: (rowId: string) => console.log(`Delete row with ID: ${rowId}`),
   onSelectRow: (checked: boolean) => console.log(`Row selected: ${checked}`),
 };
+
+export const Borderless = Template.bind({});
+Borderless.args = {
+  rowData,
+  columns,
+  borderless: true,
+};

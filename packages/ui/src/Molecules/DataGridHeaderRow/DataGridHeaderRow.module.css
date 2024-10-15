@@ -1,6 +1,6 @@
 .tableHeaderRow {
   display: flex;
-  align-items: center;
+  align-items: stretch;
   width: 100%;
 }
 
@@ -8,6 +8,10 @@
   padding: 8px;
   box-sizing: border-box;
   text-align: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--border-color);
 }
 
 .tableHeaderCell {
@@ -15,4 +19,19 @@
   vertical-align: middle;
   text-align: left;
   flex-grow: 1;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+}
+
+.spacerCell {
+  flex-grow: 1;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
+  border-right: 1px solid var(--border-color);
+  min-height: 100%;
+}
+
+.borderless {
+  border: none;
 }

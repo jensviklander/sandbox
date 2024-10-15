@@ -1,10 +1,9 @@
 import { DataGridHeaderCell } from "../DataGridHeaderCell/DataGridHeaderCell";
 import { Checkbox } from "../../Atoms/Checkbox/Checkbox";
 import { ExtendedColumnDef } from "../../types/types";
-import { SortingState } from "@tanstack/react-table"; // Import SortingState from react-table
+import { SortingState } from "@tanstack/react-table";
 import styles from "./DataGridHeaderRow.module.css";
 
-// Update the type to accept SortingState directly from react-table
 interface DataGridHeaderRowProps<T> {
   columns: ExtendedColumnDef<T, any>[];
   enableSorting?: boolean;
@@ -13,6 +12,7 @@ interface DataGridHeaderRowProps<T> {
   onSortChange?: (columnId: string) => void;
   isSelectAllChecked?: boolean;
   sorting?: SortingState;
+  borderless?: boolean;
 }
 
 export const DataGridHeaderRow = <T,>({
@@ -23,6 +23,7 @@ export const DataGridHeaderRow = <T,>({
   onSortChange,
   isSelectAllChecked = false,
   sorting = [],
+  borderless = false,
 }: DataGridHeaderRowProps<T>) => {
   const handleSelectAllChange = (checked: boolean) => {
     onSelectAll && onSelectAll(checked);
@@ -31,16 +32,17 @@ export const DataGridHeaderRow = <T,>({
   return (
     <tr className={styles.tableHeaderRow}>
       {selectable && (
-        <th className={styles.checkboxCell}>
+        <th
+          className={`${styles.checkboxCell} ${borderless ? styles.borderless : ""}`}
+        >
           <Checkbox
             onChange={handleSelectAllChange}
             checked={isSelectAllChecked}
           />
         </th>
       )}
-      {columns.map((column) => {
+      {columns.map((column, index) => {
         const currentSort = sorting.find((s) => s.id === column.id);
-
         const sortOrder =
           currentSort?.desc === undefined
             ? "none"
@@ -50,15 +52,20 @@ export const DataGridHeaderRow = <T,>({
 
         return (
           <DataGridHeaderCell
-            key={column.id}
+            key={column.id || index} // this is not covered in branch
             label={String(column.header)}
             sortable={enableSorting}
             sortOrder={sortOrder}
             onSort={() => column.id && onSortChange && onSortChange(column.id)}
             width={column.width}
+            borderless={borderless}
           />
         );
       })}
+
+      <th
+        className={`${styles.spacerCell} ${borderless ? styles.borderless : ""}`}
+      ></th>
     </tr>
   );
 };

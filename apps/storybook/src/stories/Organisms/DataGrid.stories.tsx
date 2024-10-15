@@ -150,15 +150,21 @@ Empty.args = {
   data: [],
 };
 
+export const Borderless = Template.bind({});
+Borderless.args = {
+  borderless: true,
+};
+
 export const AllFeaturesOn = Template.bind({});
 AllFeaturesOn.args = {
   title: "Team Members",
   enableSorting: true,
-  pageSize: 2,
+  pageSize: 4,
   enableSearch: true,
   enablePagination: true,
   paginationPosition: "center",
   selectable: true,
   showDeleteButton: true,
   showStatistics: true,
+  borderless: true,
 };

@@ -279,4 +279,68 @@ describe("DataGridRow Component", () => {
     const cell = container.querySelector("td");
     expect(cell).toHaveStyle("width: 180px");
   });
+
+  it("should apply borderless style to checkbox cell when borderless is true", () => {
+    render(
+      <table>
+        <tbody>
+          <DataGridRow
+            rowData={rowData}
+            columns={columns}
+            onDeleteRow={vi.fn()}
+            rowIndex={0}
+            selectable={true}
+            isSelected={false}
+            borderless={true}
+          />
+        </tbody>
+      </table>
+    );
+
+    const checkboxCell = screen
+      .getAllByRole("cell")
+      .find((cell) => cell.classList.contains(styles.checkboxCell));
+
+    expect(checkboxCell).toHaveClass(styles.borderless);
+  });
+
+  it("should apply spacerWithRightBorder class to spacer cell when showDeleteButton and borderless are false", () => {
+    const { container } = render(
+      <table>
+        <tbody>
+          <DataGridRow
+            rowData={rowData}
+            columns={columns}
+            onDeleteRow={vi.fn()}
+            rowIndex={0}
+            showDeleteButton={false}
+            borderless={false}
+          />
+        </tbody>
+      </table>
+    );
+
+    const spacerCell = container.querySelector(`.${styles.spacerCell}`);
+    expect(spacerCell).toHaveClass(styles.spacerWithRightBorder);
+  });
+
+  it("should apply borderless style to delete button cell when borderless is true", () => {
+    render(
+      <table>
+        <tbody>
+          <DataGridRow
+            rowData={rowData}
+            columns={columns}
+            onDeleteRow={vi.fn()}
+            rowIndex={0}
+            showDeleteButton={true}
+            borderless={true}
+          />
+        </tbody>
+      </table>
+    );
+
+    const deleteButtonCell = screen.getByRole("cell", { name: /trash/i });
+    expect(deleteButtonCell).toHaveClass(styles.borderless);
+  });
 });
