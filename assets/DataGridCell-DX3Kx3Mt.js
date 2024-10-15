@@ -1,1 +1,0 @@
-import{j as e}from"./jsx-runtime-DEdD30eg.js";const t="_cell_4r92p_1",o={cell:t},a=({children:l,width:s})=>e.jsx("td",{className:o.cell,style:{width:s},children:l});a.__docgenInfo={description:"",methods:[],displayName:"DataGridCell"};export{a as D};
