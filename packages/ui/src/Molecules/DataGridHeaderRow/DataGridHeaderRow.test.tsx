@@ -1,24 +1,24 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { DataGridHeaderRow } from "./DataGridHeaderRow";
-import { ExtendedColumnDef } from "../../types/types";
-import styles from "./DataGridHeaderRow.module.css";
+import { render, screen, fireEvent } from '@testing-library/react';
+import { DataGridHeaderRow } from './DataGridHeaderRow';
+import { ExtendedColumnDef } from '../../types/types';
+import styles from './DataGridHeaderRow.module.css';
 
 const mockedDataGridHeaderCell = vi.fn();
-vi.mock("../DataGridHeaderCell/DataGridHeaderCell", () => ({
+vi.mock('../DataGridHeaderCell/DataGridHeaderCell', () => ({
   DataGridHeaderCell: (props: { label: string; borderless: boolean }) => {
     mockedDataGridHeaderCell(props);
     return (
       <th>
-        {props.label} {props.borderless ? "borderless" : ""}
+        {props.label} {props.borderless ? 'borderless' : ''}
       </th>
     );
-  },
+  }
 }));
 
-vi.mock("../../Atoms/Checkbox/Checkbox", () => ({
+vi.mock('../../Atoms/Checkbox/Checkbox', () => ({
   Checkbox: ({
     onChange,
-    checked,
+    checked
   }: {
     onChange: (checked: boolean) => void;
     checked: boolean;
@@ -28,13 +28,13 @@ vi.mock("../../Atoms/Checkbox/Checkbox", () => ({
       onChange={() => onChange(!checked)}
       checked={checked}
     />
-  ),
+  )
 }));
 
-describe("DataGridHeaderRow Component", () => {
+describe('DataGridHeaderRow Component', () => {
   const columns: ExtendedColumnDef<any, any>[] = [
-    { id: "name", header: "Name", width: 150 },
-    { id: "age", header: "Age", width: 100 },
+    { id: 'name', header: 'Name', width: 150 },
+    { id: 'age', header: 'Age', width: 100 }
   ];
 
   afterEach(() => {
@@ -51,17 +51,17 @@ describe("DataGridHeaderRow Component", () => {
     );
 
     expect(mockedDataGridHeaderCell).toHaveBeenCalledWith(
-      expect.objectContaining({ label: "Name" })
+      expect.objectContaining({ label: 'Name' })
     );
     expect(mockedDataGridHeaderCell).toHaveBeenCalledWith(
-      expect.objectContaining({ label: "Age" })
+      expect.objectContaining({ label: 'Age' })
     );
   });
 
   it("should use the 'index' as the key when 'id' is not provided", () => {
     const columnsWithoutId: ExtendedColumnDef<any, any>[] = [
-      { header: "Name", width: 150 },
-      { id: "age", header: "Age", width: 100 },
+      { header: 'Name', width: 150 },
+      { id: 'age', header: 'Age', width: 100 }
     ];
 
     render(
@@ -74,11 +74,11 @@ describe("DataGridHeaderRow Component", () => {
 
     expect(mockedDataGridHeaderCell).toHaveBeenNthCalledWith(
       1,
-      expect.objectContaining({ label: "Name" })
+      expect.objectContaining({ label: 'Name' })
     );
     expect(mockedDataGridHeaderCell).toHaveBeenNthCalledWith(
       2,
-      expect.objectContaining({ label: "Age" })
+      expect.objectContaining({ label: 'Age' })
     );
   });
 
@@ -95,7 +95,7 @@ describe("DataGridHeaderRow Component", () => {
       </table>
     );
 
-    const checkboxCell = screen.getByRole("checkbox").closest("th");
+    const checkboxCell = screen.getByRole('checkbox').closest('th');
     expect(checkboxCell).toHaveClass(
       `${styles.checkboxCell} ${styles.borderless}`
     );
@@ -114,7 +114,7 @@ describe("DataGridHeaderRow Component", () => {
       </table>
     );
 
-    const checkboxCell = screen.getByRole("checkbox").closest("th");
+    const checkboxCell = screen.getByRole('checkbox').closest('th');
     expect(checkboxCell).toHaveClass(styles.checkboxCell);
     expect(checkboxCell).not.toHaveClass(styles.borderless);
   });
@@ -161,7 +161,7 @@ describe("DataGridHeaderRow Component", () => {
     );
   });
 
-  it("should render the select all checkbox when selectable is true", () => {
+  it('should render the select all checkbox when selectable is true', () => {
     const handleSelectAll = vi.fn();
     render(
       <table>
@@ -175,14 +175,14 @@ describe("DataGridHeaderRow Component", () => {
       </table>
     );
 
-    const checkbox = screen.getByRole("checkbox");
+    const checkbox = screen.getByRole('checkbox');
     expect(checkbox).toBeInTheDocument();
 
     fireEvent.click(checkbox);
     expect(handleSelectAll).toHaveBeenCalledWith(true);
   });
 
-  it("should handle an empty columns array", () => {
+  it('should handle an empty columns array', () => {
     const { container } = render(
       <table>
         <thead>

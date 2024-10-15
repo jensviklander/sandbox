@@ -1,8 +1,8 @@
-import { DataGridCell } from "../../Atoms/DataGridCell/DataGridCell";
-import { IconButton } from "../../Atoms/IconButton/IconButton";
-import { Checkbox } from "../../Atoms/Checkbox/Checkbox";
-import { ExtendedColumnDef } from "../../types/types";
-import styles from "./DataGridRow.module.css";
+import { DataGridCell } from '../../Atoms/DataGridCell/DataGridCell';
+import { IconButton } from '../../Atoms/IconButton/IconButton';
+import { Checkbox } from '../../Atoms/Checkbox/Checkbox';
+import { ExtendedColumnDef } from '../../types/types';
+import styles from './DataGridRow.module.css';
 
 interface DataGridRowProps<T> {
   rowData: T;
@@ -25,7 +25,7 @@ export const DataGridRow = <T extends { id: string }>({
   isSelected = false,
   onSelectRow,
   showDeleteButton = false,
-  borderless = false,
+  borderless = false
 }: DataGridRowProps<T>) => {
   const isEvenRow = rowIndex % 2 === 0;
 
@@ -35,7 +35,7 @@ export const DataGridRow = <T extends { id: string }>({
     >
       {selectable && (
         <td
-          className={`${styles.checkboxCell} ${borderless ? styles.borderless : ""}`}
+          className={`${styles.checkboxCell} ${borderless ? styles.borderless : ''}`}
         >
           <Checkbox
             checked={isSelected}
@@ -48,7 +48,7 @@ export const DataGridRow = <T extends { id: string }>({
         const cellKey = `${rowIndex}-${col.id || index}`;
         const width = col.width || 180;
         const cellValue =
-          "accessorKey" in col
+          'accessorKey' in col
             ? rowData[col.accessorKey as keyof T]
             : col.accessorFn
               ? col.accessorFn(rowData, rowIndex)
@@ -56,20 +56,20 @@ export const DataGridRow = <T extends { id: string }>({
 
         return (
           <DataGridCell key={cellKey} width={width} borderless={borderless}>
-            {cellValue ?? ""}
+            {cellValue ?? ''}
           </DataGridCell>
         );
       })}
 
       <td
         className={`${styles.spacerCell} ${
-          !showDeleteButton && !borderless ? styles.spacerWithRightBorder : ""
-        } ${borderless ? styles.borderless : ""}`}
+          !showDeleteButton && !borderless ? styles.spacerWithRightBorder : ''
+        } ${borderless ? styles.borderless : ''}`}
       ></td>
 
       {showDeleteButton && (
         <td
-          className={`${styles.iconCell} ${borderless ? styles.borderless : ""}`}
+          className={`${styles.iconCell} ${borderless ? styles.borderless : ''}`}
         >
           <IconButton icon="trash" onClick={() => onDeleteRow(rowData.id)} />
         </td>

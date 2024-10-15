@@ -1,9 +1,9 @@
-import { render, screen } from "@testing-library/react";
-import { DataGridCell } from "./DataGridCell";
-import styles from "./DataGridCell.module.css";
+import { render, screen } from '@testing-library/react';
+import { DataGridCell } from './DataGridCell';
+import styles from './DataGridCell.module.css';
 
-describe("DataGridCell Component", () => {
-  it("should render the cell with provided children", () => {
+describe('DataGridCell Component', () => {
+  it('should render the cell with provided children', () => {
     render(
       <table>
         <tbody>
@@ -14,11 +14,11 @@ describe("DataGridCell Component", () => {
       </table>
     );
 
-    const cell = screen.getByText("Test Content");
+    const cell = screen.getByText('Test Content');
     expect(cell).toBeInTheDocument();
   });
 
-  it("should apply the correct width", () => {
+  it('should apply the correct width', () => {
     const { container } = render(
       <table>
         <tbody>
@@ -29,11 +29,11 @@ describe("DataGridCell Component", () => {
       </table>
     );
 
-    const cell = container.querySelector("td");
-    expect(cell).toHaveStyle("width: 150px");
+    const cell = container.querySelector('td');
+    expect(cell).toHaveStyle('width: 150px');
   });
 
-  it("should apply a different width when updated", () => {
+  it('should apply a different width when updated', () => {
     const { rerender, container } = render(
       <table>
         <tbody>
@@ -44,8 +44,8 @@ describe("DataGridCell Component", () => {
       </table>
     );
 
-    let cell = container.querySelector("td");
-    expect(cell).toHaveStyle("width: 150px");
+    let cell = container.querySelector('td');
+    expect(cell).toHaveStyle('width: 150px');
 
     rerender(
       <table>
@@ -57,11 +57,11 @@ describe("DataGridCell Component", () => {
       </table>
     );
 
-    cell = container.querySelector("td");
-    expect(cell).toHaveStyle("width: 200px");
+    cell = container.querySelector('td');
+    expect(cell).toHaveStyle('width: 200px');
   });
 
-  it("should apply the borderless class when borderless is true", () => {
+  it('should apply the borderless class when borderless is true', () => {
     const { container } = render(
       <table>
         <tbody>
@@ -74,11 +74,11 @@ describe("DataGridCell Component", () => {
       </table>
     );
 
-    const cell = container.querySelector("td");
+    const cell = container.querySelector('td');
     expect(cell).toHaveClass(styles.borderless);
   });
 
-  it("should not apply the borderless class when borderless is false", () => {
+  it('should not apply the borderless class when borderless is false', () => {
     const { container } = render(
       <table>
         <tbody>
@@ -91,11 +91,11 @@ describe("DataGridCell Component", () => {
       </table>
     );
 
-    const cell = container.querySelector("td");
+    const cell = container.querySelector('td');
     expect(cell).not.toHaveClass(styles.borderless);
   });
 
-  it("should not apply the borderless class when borderless is not provided", () => {
+  it('should not apply the borderless class when borderless is not provided', () => {
     const { container } = render(
       <table>
         <tbody>
@@ -106,7 +106,7 @@ describe("DataGridCell Component", () => {
       </table>
     );
 
-    const cell = container.querySelector("td");
+    const cell = container.querySelector('td');
     expect(cell).not.toHaveClass(styles.borderless);
   });
 });

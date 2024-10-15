@@ -1,17 +1,17 @@
-import { useState, useEffect } from "react";
-import { DataGridHeaderRow } from "../../Molecules/DataGridHeaderRow/DataGridHeaderRow";
-import { DataGridRow } from "../../Molecules/DataGridRow/DataGridRow";
-import { DataGridControlMenu } from "../../Molecules/DataGridControlMenu/DataGridControlMenu";
-import { Pagination } from "../../Molecules/Pagination/Pagination";
+import { useState, useEffect } from 'react';
+import { DataGridHeaderRow } from '../../Molecules/DataGridHeaderRow/DataGridHeaderRow';
+import { DataGridRow } from '../../Molecules/DataGridRow/DataGridRow';
+import { DataGridControlMenu } from '../../Molecules/DataGridControlMenu/DataGridControlMenu';
+import { Pagination } from '../../Molecules/Pagination/Pagination';
 import {
   SortingState,
   useReactTable,
   getCoreRowModel,
   getSortedRowModel,
-  getPaginationRowModel,
-} from "@tanstack/react-table";
-import { ExtendedColumnDef } from "../../types/types";
-import styles from "./DataGrid.module.css";
+  getPaginationRowModel
+} from '@tanstack/react-table';
+import { ExtendedColumnDef } from '../../types/types';
+import styles from './DataGrid.module.css';
 
 interface DataGridProps<T> {
   title?: string;
@@ -21,7 +21,7 @@ interface DataGridProps<T> {
   selectable?: boolean;
   enableSearch?: boolean;
   enablePagination?: boolean;
-  paginationPosition?: "left" | "center" | "right";
+  paginationPosition?: 'left' | 'center' | 'right';
   pageSize?: number;
   currentPage?: number;
   onPageChange?: (pageIndex: number) => void;
@@ -40,7 +40,7 @@ export default function DataGrid<T extends { id: string }>({
   selectable = false,
   enableSearch = false,
   enablePagination = false,
-  paginationPosition = "center",
+  paginationPosition = 'center',
   pageSize = 10,
   currentPage = 0,
   onPageChange,
@@ -48,7 +48,7 @@ export default function DataGrid<T extends { id: string }>({
   onSelectRow,
   showDeleteButton = false,
   showStatistics = false,
-  borderless = false,
+  borderless = false
 }: DataGridProps<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [initialData] = useState<T[]>(data);
@@ -64,7 +64,7 @@ export default function DataGrid<T extends { id: string }>({
     getRowId: (row) => row.id,
     state: {
       sorting,
-      pagination: { pageIndex, pageSize },
+      pagination: { pageIndex, pageSize }
     },
     onSortingChange: setSorting,
     getCoreRowModel: getCoreRowModel(),
@@ -72,7 +72,7 @@ export default function DataGrid<T extends { id: string }>({
     getPaginationRowModel: enablePagination
       ? getPaginationRowModel()
       : undefined,
-    manualPagination: !enablePagination,
+    manualPagination: !enablePagination
   });
 
   useEffect(() => {
@@ -102,44 +102,44 @@ export default function DataGrid<T extends { id: string }>({
 
   const handleSortChange = (columnId: string) => {
     const column = columns.find((col) => col.id === columnId);
-    const isNumericColumn = column?.type === "number";
+    const isNumericColumn = column?.type === 'number';
 
     const currentSort = sorting.find((s) => s.id === columnId);
-    let nextSortOrder: "asc" | "desc" | "none" = "none";
+    let nextSortOrder: 'asc' | 'desc' | 'none' = 'none';
 
     if (isNumericColumn) {
       if (!currentSort) {
-        nextSortOrder = "desc";
+        nextSortOrder = 'desc';
       } else if (currentSort.desc) {
-        nextSortOrder = "asc";
+        nextSortOrder = 'asc';
       } else {
-        nextSortOrder = "none";
+        nextSortOrder = 'none';
       }
     } else {
       if (!currentSort) {
-        nextSortOrder = "asc";
+        nextSortOrder = 'asc';
       } else if (!currentSort.desc) {
-        nextSortOrder = "desc";
+        nextSortOrder = 'desc';
       } else {
-        nextSortOrder = "none";
+        nextSortOrder = 'none';
       }
     }
 
     const newSortingState: SortingState =
-      nextSortOrder === "none"
+      nextSortOrder === 'none'
         ? []
-        : [{ id: columnId, desc: nextSortOrder === "desc" }];
+        : [{ id: columnId, desc: nextSortOrder === 'desc' }];
 
     setSorting(newSortingState);
 
-    if (nextSortOrder === "none") {
+    if (nextSortOrder === 'none') {
       setTableData(initialData);
     }
   };
 
   const handleSearch = (query: string) => {
     const filteredData = initialData.filter((row) =>
-      Object.values(row).join(" ").toLowerCase().includes(query.toLowerCase())
+      Object.values(row).join(' ').toLowerCase().includes(query.toLowerCase())
     );
 
     setTableData(filteredData);

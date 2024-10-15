@@ -1,7 +1,7 @@
-import { render, screen, fireEvent } from "@testing-library/react";
-import { DataGridRow } from "./DataGridRow";
-import { ExtendedColumnDef } from "../../types/types";
-import styles from "./DataGridRow.module.css";
+import { render, screen, fireEvent } from '@testing-library/react';
+import { DataGridRow } from './DataGridRow';
+import { ExtendedColumnDef } from '../../types/types';
+import styles from './DataGridRow.module.css';
 
 interface RowData {
   id: string;
@@ -9,15 +9,15 @@ interface RowData {
   age: number;
 }
 
-describe("DataGridRow Component", () => {
+describe('DataGridRow Component', () => {
   const columns: ExtendedColumnDef<RowData, any>[] = [
-    { id: "name", header: "Name", accessorKey: "name", width: 150 },
-    { id: "age", header: "Age", accessorKey: "age", width: 100 },
+    { id: 'name', header: 'Name', accessorKey: 'name', width: 150 },
+    { id: 'age', header: 'Age', accessorKey: 'age', width: 100 }
   ];
 
-  const rowData: RowData = { id: "1", name: "John Doe", age: 30 };
+  const rowData: RowData = { id: '1', name: 'John Doe', age: 30 };
 
-  it("should render the row with the correct data", () => {
+  it('should render the row with the correct data', () => {
     render(
       <table>
         <tbody>
@@ -31,14 +31,14 @@ describe("DataGridRow Component", () => {
       </table>
     );
 
-    const nameCell = screen.getByText("John Doe");
-    const ageCell = screen.getByText("30");
+    const nameCell = screen.getByText('John Doe');
+    const ageCell = screen.getByText('30');
 
     expect(nameCell).toBeInTheDocument();
     expect(ageCell).toBeInTheDocument();
   });
 
-  it("should render the checkbox when selectable is true", () => {
+  it('should render the checkbox when selectable is true', () => {
     const handleSelectRow = vi.fn();
 
     render(
@@ -57,14 +57,14 @@ describe("DataGridRow Component", () => {
       </table>
     );
 
-    const checkbox = screen.getByRole("checkbox");
+    const checkbox = screen.getByRole('checkbox');
     expect(checkbox).toBeInTheDocument();
 
     fireEvent.click(checkbox);
     expect(handleSelectRow).toHaveBeenCalledWith(true);
   });
 
-  it("should call onDeleteRow when delete button is clicked", () => {
+  it('should call onDeleteRow when delete button is clicked', () => {
     const handleDeleteRow = vi.fn();
 
     render(
@@ -81,13 +81,13 @@ describe("DataGridRow Component", () => {
       </table>
     );
 
-    const deleteButton = screen.getByRole("button");
+    const deleteButton = screen.getByRole('button');
     fireEvent.click(deleteButton);
 
     expect(handleDeleteRow).toHaveBeenCalledWith(rowData.id);
   });
 
-  it("should not render the delete button when showDeleteButton is false", () => {
+  it('should not render the delete button when showDeleteButton is false', () => {
     render(
       <table>
         <tbody>
@@ -102,11 +102,11 @@ describe("DataGridRow Component", () => {
       </table>
     );
 
-    const deleteButton = screen.queryByRole("button");
+    const deleteButton = screen.queryByRole('button');
     expect(deleteButton).not.toBeInTheDocument();
   });
 
-  it("should render the spacer cell", () => {
+  it('should render the spacer cell', () => {
     const { container } = render(
       <table>
         <tbody>
@@ -124,7 +124,7 @@ describe("DataGridRow Component", () => {
     expect(spacerCell).toBeInTheDocument();
   });
 
-  it("should apply evenRow style for even rows", () => {
+  it('should apply evenRow style for even rows', () => {
     const { container } = render(
       <table>
         <tbody>
@@ -138,11 +138,11 @@ describe("DataGridRow Component", () => {
       </table>
     );
 
-    const rowElement = container.querySelector("tr");
+    const rowElement = container.querySelector('tr');
     expect(rowElement).toHaveClass(styles.evenRow);
   });
 
-  it("should apply oddRow style for odd rows", () => {
+  it('should apply oddRow style for odd rows', () => {
     const { container } = render(
       <table>
         <tbody>
@@ -156,19 +156,19 @@ describe("DataGridRow Component", () => {
       </table>
     );
 
-    const rowElement = container.querySelector("tr");
+    const rowElement = container.querySelector('tr');
     expect(rowElement).toHaveClass(styles.oddRow);
   });
 
-  it("should render cell content using accessorFn when provided", () => {
+  it('should render cell content using accessorFn when provided', () => {
     const columnsWithAccessorFn: ExtendedColumnDef<RowData, any>[] = [
       {
-        id: "custom",
-        header: "Custom",
+        id: 'custom',
+        header: 'Custom',
         accessorFn: (rowData, rowIndex) =>
           `${rowData.name} - Row ${rowIndex + 1}`,
-        width: 200,
-      },
+        width: 200
+      }
     ];
 
     render(
@@ -184,13 +184,13 @@ describe("DataGridRow Component", () => {
       </table>
     );
 
-    const customCell = screen.getByText("John Doe - Row 1");
+    const customCell = screen.getByText('John Doe - Row 1');
     expect(customCell).toBeInTheDocument();
   });
 
-  it("should render an empty cell if neither accessorKey nor accessorFn are provided", () => {
+  it('should render an empty cell if neither accessorKey nor accessorFn are provided', () => {
     const columnsWithoutAccessor: ExtendedColumnDef<RowData, any>[] = [
-      { id: "custom", header: "Custom", width: 200 },
+      { id: 'custom', header: 'Custom', width: 200 }
     ];
 
     render(
@@ -206,15 +206,15 @@ describe("DataGridRow Component", () => {
       </table>
     );
 
-    const allCells = screen.getAllByRole("cell");
+    const allCells = screen.getAllByRole('cell');
 
     const customCell = allCells[0];
     expect(customCell).toBeEmptyDOMElement();
   });
 
-  it("should use index as part of cellKey when col.id is not defined", () => {
+  it('should use index as part of cellKey when col.id is not defined', () => {
     const columnsWithoutId: ExtendedColumnDef<RowData, any>[] = [
-      { header: "Custom", accessorKey: "name", width: 200 },
+      { header: 'Custom', accessorKey: 'name', width: 200 }
     ];
 
     render(
@@ -230,15 +230,15 @@ describe("DataGridRow Component", () => {
       </table>
     );
 
-    const allCells = screen.getAllByRole("cell");
+    const allCells = screen.getAllByRole('cell');
 
     expect(allCells).toHaveLength(2);
     expect(allCells[0]).toBeInTheDocument();
   });
 
-  it("should apply the provided column width when width is specified", () => {
+  it('should apply the provided column width when width is specified', () => {
     const columnsWithWidth: ExtendedColumnDef<RowData, any>[] = [
-      { id: "name", header: "Name", accessorKey: "name", width: 150 },
+      { id: 'name', header: 'Name', accessorKey: 'name', width: 150 }
     ];
 
     const { container } = render(
@@ -254,13 +254,13 @@ describe("DataGridRow Component", () => {
       </table>
     );
 
-    const cell = container.querySelector("td");
-    expect(cell).toHaveStyle("width: 150px");
+    const cell = container.querySelector('td');
+    expect(cell).toHaveStyle('width: 150px');
   });
 
-  it("should apply the default column width when width is not provided", () => {
+  it('should apply the default column width when width is not provided', () => {
     const columnsWithoutWidth: ExtendedColumnDef<RowData, any>[] = [
-      { id: "name", header: "Name", accessorKey: "name" },
+      { id: 'name', header: 'Name', accessorKey: 'name' }
     ];
 
     const { container } = render(
@@ -276,11 +276,11 @@ describe("DataGridRow Component", () => {
       </table>
     );
 
-    const cell = container.querySelector("td");
-    expect(cell).toHaveStyle("width: 180px");
+    const cell = container.querySelector('td');
+    expect(cell).toHaveStyle('width: 180px');
   });
 
-  it("should apply borderless style to checkbox cell when borderless is true", () => {
+  it('should apply borderless style to checkbox cell when borderless is true', () => {
     render(
       <table>
         <tbody>
@@ -298,13 +298,13 @@ describe("DataGridRow Component", () => {
     );
 
     const checkboxCell = screen
-      .getAllByRole("cell")
+      .getAllByRole('cell')
       .find((cell) => cell.classList.contains(styles.checkboxCell));
 
     expect(checkboxCell).toHaveClass(styles.borderless);
   });
 
-  it("should apply spacerWithRightBorder class to spacer cell when showDeleteButton and borderless are false", () => {
+  it('should apply spacerWithRightBorder class to spacer cell when showDeleteButton and borderless are false', () => {
     const { container } = render(
       <table>
         <tbody>
@@ -324,7 +324,7 @@ describe("DataGridRow Component", () => {
     expect(spacerCell).toHaveClass(styles.spacerWithRightBorder);
   });
 
-  it("should apply borderless style to delete button cell when borderless is true", () => {
+  it('should apply borderless style to delete button cell when borderless is true', () => {
     render(
       <table>
         <tbody>
@@ -340,7 +340,7 @@ describe("DataGridRow Component", () => {
       </table>
     );
 
-    const deleteButtonCell = screen.getByRole("cell", { name: /trash/i });
+    const deleteButtonCell = screen.getByRole('cell', { name: /trash/i });
     expect(deleteButtonCell).toHaveClass(styles.borderless);
   });
 });

@@ -1,4 +1,4 @@
-import styles from "./DataGridCell.module.css";
+import styles from './DataGridCell.module.css';
 
 interface DataGridCellProps {
   children: React.ReactNode;
@@ -9,10 +9,10 @@ interface DataGridCellProps {
 export const DataGridCell: React.FC<DataGridCellProps> = ({
   children,
   width,
-  borderless = false,
+  borderless = false
 }) => (
   <td
-    className={`${styles.cell} ${borderless ? styles.borderless : ""}`}
+    className={`${styles.cell} ${borderless ? styles.borderless : ''}`}
     style={{ width }}
   >
     {children}

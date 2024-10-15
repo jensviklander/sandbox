@@ -1,5 +1,5 @@
-import { Link } from "../../Atoms/Link/Link";
-import styles from "./Pagination.module.css";
+import { Link } from '../../Atoms/Link/Link';
+import styles from './Pagination.module.css';
 
 interface PaginationProps {
   currentPage: number;
@@ -10,12 +10,12 @@ interface PaginationProps {
 export const Pagination: React.FC<PaginationProps> = ({
   currentPage,
   totalPages,
-  onPageChange,
+  onPageChange
 }) => {
   const pages = Array.from({ length: totalPages }, (_, index) => index + 1);
 
   return (
-    <div className={styles["pagination-controls"]}>
+    <div className={styles['pagination-controls']}>
       <Link
         href="#"
         onClick={() => onPageChange(0)}
@@ -35,7 +35,7 @@ export const Pagination: React.FC<PaginationProps> = ({
       {pages.map((page) => (
         <span key={page}>
           {currentPage === page - 1 ? (
-            <span className={styles["current-page"]}>{page}</span>
+            <span className={styles['current-page']}>{page}</span>
           ) : (
             <Link href="#" onClick={() => onPageChange(page - 1)}>
               {page}

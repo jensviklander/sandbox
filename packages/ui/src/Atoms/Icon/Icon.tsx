@@ -1,11 +1,11 @@
-import { IoTrash } from "react-icons/io5";
-import { FaSort, FaSortUp, FaSortDown } from "react-icons/fa";
+import { IoTrash } from 'react-icons/io5';
+import { FaSort, FaSortUp, FaSortDown } from 'react-icons/fa';
 
 const iconMapping = {
   trash: IoTrash,
   sort: FaSort,
   sortAsc: FaSortUp,
-  sortDesc: FaSortDown,
+  sortDesc: FaSortDown
 };
 
 export type IconNames = keyof typeof iconMapping;

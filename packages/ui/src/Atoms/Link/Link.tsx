@@ -1,4 +1,4 @@
-import styles from "./Link.module.css";
+import styles from './Link.module.css';
 
 interface LinkProps {
   href: string;
@@ -12,8 +12,8 @@ export const Link: React.FC<LinkProps> = ({
   href,
   onClick,
   isDisabled = false,
-  className = "",
-  children,
+  className = '',
+  children
 }) => {
   return (
     <a
@@ -22,7 +22,7 @@ export const Link: React.FC<LinkProps> = ({
         e.preventDefault();
         if (!isDisabled) onClick(e);
       }}
-      className={`${styles.link} ${className} ${isDisabled ? styles.disabled : ""}`}
+      className={`${styles.link} ${className} ${isDisabled ? styles.disabled : ''}`}
       aria-disabled={isDisabled}
     >
       {children}

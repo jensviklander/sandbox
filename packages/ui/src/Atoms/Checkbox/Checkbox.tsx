@@ -1,4 +1,4 @@
-import styles from "./Checkbox.module.css";
+import styles from './Checkbox.module.css';
 
 interface CheckboxProps {
   label?: string;
@@ -9,7 +9,7 @@ interface CheckboxProps {
 export const Checkbox: React.FC<CheckboxProps> = ({
   label,
   checked,
-  onChange,
+  onChange
 }) => (
   <label>
     <div className={styles.wrapper}>

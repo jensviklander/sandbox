@@ -1,8 +1,8 @@
-import { DataGridHeaderCell } from "../DataGridHeaderCell/DataGridHeaderCell";
-import { Checkbox } from "../../Atoms/Checkbox/Checkbox";
-import { ExtendedColumnDef } from "../../types/types";
-import { SortingState } from "@tanstack/react-table";
-import styles from "./DataGridHeaderRow.module.css";
+import { DataGridHeaderCell } from '../DataGridHeaderCell/DataGridHeaderCell';
+import { Checkbox } from '../../Atoms/Checkbox/Checkbox';
+import { ExtendedColumnDef } from '../../types/types';
+import { SortingState } from '@tanstack/react-table';
+import styles from './DataGridHeaderRow.module.css';
 
 interface DataGridHeaderRowProps<T> {
   columns: ExtendedColumnDef<T, any>[];
@@ -23,7 +23,7 @@ export const DataGridHeaderRow = <T,>({
   onSortChange,
   isSelectAllChecked = false,
   sorting = [],
-  borderless = false,
+  borderless = false
 }: DataGridHeaderRowProps<T>) => {
   const handleSelectAllChange = (checked: boolean) => {
     onSelectAll && onSelectAll(checked);
@@ -33,7 +33,7 @@ export const DataGridHeaderRow = <T,>({
     <tr className={styles.tableHeaderRow}>
       {selectable && (
         <th
-          className={`${styles.checkboxCell} ${borderless ? styles.borderless : ""}`}
+          className={`${styles.checkboxCell} ${borderless ? styles.borderless : ''}`}
         >
           <Checkbox
             onChange={handleSelectAllChange}
@@ -45,10 +45,10 @@ export const DataGridHeaderRow = <T,>({
         const currentSort = sorting.find((s) => s.id === column.id);
         const sortOrder =
           currentSort?.desc === undefined
-            ? "none"
+            ? 'none'
             : currentSort?.desc
-              ? "desc"
-              : "asc";
+              ? 'desc'
+              : 'asc';
 
         return (
           <DataGridHeaderCell
@@ -64,7 +64,7 @@ export const DataGridHeaderRow = <T,>({
       })}
 
       <th
-        className={`${styles.spacerCell} ${borderless ? styles.borderless : ""}`}
+        className={`${styles.spacerCell} ${borderless ? styles.borderless : ''}`}
       ></th>
     </tr>
   );

@@ -1,5 +1,5 @@
-import { Icon, IconNames } from "../Icon/Icon";
-import styles from "./IconButton.module.css";
+import { Icon, IconNames } from '../Icon/Icon';
+import styles from './IconButton.module.css';
 
 interface IconButtonProps {
   icon: IconNames;

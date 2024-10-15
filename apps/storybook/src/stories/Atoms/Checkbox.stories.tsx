@@ -1,21 +1,21 @@
-import { Meta, StoryFn } from "@storybook/react";
-import React, { useState } from "react";
-import { Checkbox } from "@repo/ui/checkbox";
+import { Meta, StoryFn } from '@storybook/react';
+import React, { useState } from 'react';
+import { Checkbox } from '@repo/ui/checkbox';
 
 export default {
-  title: "Atoms/Checkbox",
+  title: 'Atoms/Checkbox',
   component: Checkbox,
   parameters: {
     docs: {
       description: {
         component:
-          "The Checkbox component allows users to make binary choices (checked/unchecked). It can optionally display a label next to the checkbox, making it useful for forms and selections.",
-      },
-    },
+          'The Checkbox component allows users to make binary choices (checked/unchecked). It can optionally display a label next to the checkbox, making it useful for forms and selections.'
+      }
+    }
   },
   argTypes: {
-    label: { control: "text" },
-  },
+    label: { control: 'text' }
+  }
 } as Meta;
 
 const Template: StoryFn<React.ComponentProps<typeof Checkbox>> = (args) => {
@@ -33,5 +33,5 @@ const Template: StoryFn<React.ComponentProps<typeof Checkbox>> = (args) => {
 export const Default = Template.bind({});
 Default.args = {
   checked: false,
-  label: "Label Text",
+  label: 'Label Text'
 };
