@@ -38,18 +38,15 @@ jobs:
         run: |
           GIST_ID=${{ secrets.UI_GIST_ID }}
 
-          BADGE_JSON=$(cat <<EOF
-          {
+          echo '{
             "schemaVersion": 1,
             "label": "coverage",
-            "message": "$COVERAGE%",
+            "message": "'"$COVERAGE"'%",
             "color": "brightgreen"
-          }
-          EOF
-          )
+          }' > ui_coverage_badge.json
 
           curl -X PATCH \
             -H "Authorization: token $GIST_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
-            -d "{\"files\": {\"ui_coverage_badge.json\": {\"content\": \"$BADGE_JSON\"}}}" \
+            -d "{\"files\": {\"ui_coverage_badge.json\": {\"content\": \"$(cat ui_coverage_badge.json)\"}}}" \
             "https://api.github.com/gists/$GIST_ID"
