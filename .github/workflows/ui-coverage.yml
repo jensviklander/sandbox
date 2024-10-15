@@ -31,17 +31,25 @@ jobs:
           COVERAGE=$(echo "$OUTPUT" | grep -oP 'Statements\s*:\s*\K[\d]+(\.[\d]+)?(?=%)' | head -1)
           echo "coverage=$COVERAGE" >> $GITHUB_ENV
 
-      - name: Update Gist with UI coverage badge
+      - name: Update Gist with UI coverage JSON badge
         env:
           GIST_TOKEN: ${{ secrets.UI_GIST_TOKEN }}
           COVERAGE: ${{ env.coverage }}
         run: |
           GIST_ID=${{ secrets.UI_GIST_ID }}
 
-          BADGE_MARKDOWN="![Coverage](https://img.shields.io/badge/coverage-$COVERAGE%25-brightgreen)"
+          BADGE_JSON=$(cat <<EOF
+          {
+            "schemaVersion": 1,
+            "label": "coverage",
+            "message": "$COVERAGE%",
+            "color": "brightgreen"
+          }
+          EOF
+          )
 
           curl -X PATCH \
             -H "Authorization: token $GIST_TOKEN" \
             -H "Accept: application/vnd.github.v3+json" \
-            -d "{\"files\": {\"ui_coverage_badge.md\": {\"content\": \"$BADGE_MARKDOWN\"}}}" \
+            -d "{\"files\": {\"ui_coverage_badge.json\": {\"content\": \"$BADGE_JSON\"}}}" \
             "https://api.github.com/gists/$GIST_ID"
