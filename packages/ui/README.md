@@ -1,5 +1,7 @@
 # ui
 
+![UI Coverage](https://img.shields.io/endpoint?url=https://gist.githubusercontent.com/jensviklander/d279cb2fca8590f620ecddeb2db4c08c/raw/ui_coverage_badge.md)
+
 ## TODO:
 
 Add the following props to DataGrid:
