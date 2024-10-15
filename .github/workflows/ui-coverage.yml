@@ -1,0 +1,47 @@
+name: UI Coverage Check
+
+on:
+  push:
+    paths:
+      - 'packages/ui/**'
+      - '.github/workflows/ui-coverage.yml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '22.0.0'
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run tests and generate coverage for UI
+        id: coverage
+        run: |
+          cd packages/ui
+          OUTPUT=$(yarn test:coverage)
+          echo "$OUTPUT"
+          COVERAGE=$(echo "$OUTPUT" | grep -oP 'Statements\s*:\s*\K[\d]+(\.[\d]+)?(?=%)' | head -1)
+          echo "coverage=$COVERAGE" >> $GITHUB_ENV
+
+      - name: Update Gist with UI coverage badge
+        env:
+          GIST_TOKEN: ${{ secrets.UI_GIST_TOKEN }}
+          COVERAGE: ${{ env.coverage }}
+        run: |
+          GIST_ID=${{ secrets.UI_GIST_ID }}
+
+          BADGE_MARKDOWN="![Coverage](https://img.shields.io/badge/coverage-$COVERAGE%25-brightgreen)"
+
+          curl -X PATCH \
+            -H "Authorization: token $GIST_TOKEN" \
+            -H "Accept: application/vnd.github.v3+json" \
+            -d "{\"files\": {\"ui_coverage_badge.md\": {\"content\": \"$BADGE_MARKDOWN\"}}}" \
+            "https://api.github.com/gists/$GIST_ID"
