@@ -4,7 +4,15 @@ import styles from './DataGridHeaderCell.module.css';
 
 describe('DataGridHeaderCell Component', () => {
   it('should render the header cell with the correct label', () => {
-    render(<DataGridHeaderCell label="Name" sortOrder="none" />);
+    render(
+      <table>
+        <thead>
+          <tr>
+            <DataGridHeaderCell label="Name" sortOrder="none" />
+          </tr>
+        </thead>
+      </table>
+    );
 
     const labelElement = screen.getByText('Name');
     expect(labelElement).toBeInTheDocument();
@@ -12,7 +20,13 @@ describe('DataGridHeaderCell Component', () => {
 
   it('should render the sort button when sortable is true with default sort icon', () => {
     render(
-      <DataGridHeaderCell label="Name" sortable={true} sortOrder="none" />
+      <table>
+        <thead>
+          <tr>
+            <DataGridHeaderCell label="Name" sortable={true} sortOrder="none" />
+          </tr>
+        </thead>
+      </table>
     );
 
     const sortIcon = screen.getByLabelText('sort');
@@ -20,7 +34,15 @@ describe('DataGridHeaderCell Component', () => {
   });
 
   it('should render the sortAsc icon when sortOrder is asc', () => {
-    render(<DataGridHeaderCell label="Name" sortable={true} sortOrder="asc" />);
+    render(
+      <table>
+        <thead>
+          <tr>
+            <DataGridHeaderCell label="Name" sortable={true} sortOrder="asc" />
+          </tr>
+        </thead>
+      </table>
+    );
 
     const sortAscIcon = screen.getByLabelText('sortAsc');
     expect(sortAscIcon).toBeInTheDocument();
@@ -28,7 +50,13 @@ describe('DataGridHeaderCell Component', () => {
 
   it('should render the sortDesc icon when sortOrder is desc', () => {
     render(
-      <DataGridHeaderCell label="Name" sortable={true} sortOrder="desc" />
+      <table>
+        <thead>
+          <tr>
+            <DataGridHeaderCell label="Name" sortable={true} sortOrder="desc" />
+          </tr>
+        </thead>
+      </table>
     );
 
     const sortDescIcon = screen.getByLabelText('sortDesc');
@@ -37,7 +65,13 @@ describe('DataGridHeaderCell Component', () => {
 
   it('should render the default sort icon when sortOrder is none', () => {
     render(
-      <DataGridHeaderCell label="Name" sortable={true} sortOrder="none" />
+      <table>
+        <thead>
+          <tr>
+            <DataGridHeaderCell label="Name" sortable={true} sortOrder="none" />
+          </tr>
+        </thead>
+      </table>
     );
 
     const sortIcon = screen.getByLabelText('sort');
@@ -47,12 +81,18 @@ describe('DataGridHeaderCell Component', () => {
   it('should call onSort when the sort button is clicked', () => {
     const handleSort = vi.fn();
     render(
-      <DataGridHeaderCell
-        label="Name"
-        sortable={true}
-        sortOrder="none"
-        onSort={handleSort}
-      />
+      <table>
+        <thead>
+          <tr>
+            <DataGridHeaderCell
+              label="Name"
+              sortable={true}
+              sortOrder="none"
+              onSort={handleSort}
+            />
+          </tr>
+        </thead>
+      </table>
     );
 
     const sortButton = screen.getByRole('button');
@@ -63,12 +103,18 @@ describe('DataGridHeaderCell Component', () => {
 
   it('should apply the correct width when provided', () => {
     const { container } = render(
-      <DataGridHeaderCell
-        label="Name"
-        sortable={true}
-        sortOrder="none"
-        width={200}
-      />
+      <table>
+        <thead>
+          <tr>
+            <DataGridHeaderCell
+              label="Name"
+              sortable={true}
+              sortOrder="none"
+              width={200}
+            />
+          </tr>
+        </thead>
+      </table>
     );
 
     const headerCell = container.querySelector('th');
@@ -77,7 +123,13 @@ describe('DataGridHeaderCell Component', () => {
 
   it('should apply the default width if no width is provided', () => {
     const { container } = render(
-      <DataGridHeaderCell label="Name" sortable={true} sortOrder="none" />
+      <table>
+        <thead>
+          <tr>
+            <DataGridHeaderCell label="Name" sortable={true} sortOrder="none" />
+          </tr>
+        </thead>
+      </table>
     );
 
     const headerCell = container.querySelector('th');
@@ -86,7 +138,17 @@ describe('DataGridHeaderCell Component', () => {
 
   it('should apply the borderless class when borderless is true', () => {
     const { container } = render(
-      <DataGridHeaderCell label="Name" borderless={true} sortOrder="none" />
+      <table>
+        <thead>
+          <tr>
+            <DataGridHeaderCell
+              label="Name"
+              borderless={true}
+              sortOrder="none"
+            />
+          </tr>
+        </thead>
+      </table>
     );
 
     const headerCell = container.querySelector('th');
@@ -95,7 +157,17 @@ describe('DataGridHeaderCell Component', () => {
 
   it('should not apply the borderless class when borderless is false', () => {
     const { container } = render(
-      <DataGridHeaderCell label="Name" borderless={false} sortOrder="none" />
+      <table>
+        <thead>
+          <tr>
+            <DataGridHeaderCell
+              label="Name"
+              borderless={false}
+              sortOrder="none"
+            />
+          </tr>
+        </thead>
+      </table>
     );
 
     const headerCell = container.querySelector('th');
@@ -104,7 +176,13 @@ describe('DataGridHeaderCell Component', () => {
 
   it('should not apply the borderless class when borderless is not provided', () => {
     const { container } = render(
-      <DataGridHeaderCell label="Name" sortOrder="none" />
+      <table>
+        <thead>
+          <tr>
+            <DataGridHeaderCell label="Name" sortOrder="none" />
+          </tr>
+        </thead>
+      </table>
     );
 
     const headerCell = container.querySelector('th');
@@ -113,13 +191,18 @@ describe('DataGridHeaderCell Component', () => {
 
   it('should use default onSort function if not provided', () => {
     const { container } = render(
-      <DataGridHeaderCell label="Name" sortable={true} sortOrder="none" />
+      <table>
+        <thead>
+          <tr>
+            <DataGridHeaderCell label="Name" sortable={true} sortOrder="none" />
+          </tr>
+        </thead>
+      </table>
     );
 
     const sortButton = screen.getByRole('button');
     fireEvent.click(sortButton);
 
-    // No errors should occur
     expect(container).toBeInTheDocument();
   });
 });
