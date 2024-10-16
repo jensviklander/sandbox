@@ -23,6 +23,7 @@ module.exports = {
   ignorePatterns: ['vitest.setup.ts', 'vitest.config.mts'],
   globals: {
     afterEach: 'readonly',
+    beforeEach: 'readonly',
     describe: 'readonly',
     it: 'readonly',
     expect: 'readonly',

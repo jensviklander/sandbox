@@ -4,7 +4,7 @@ import styles from './Input.module.css';
 
 describe('Input Component', () => {
   it('should render an input element', () => {
-    render(<Input onChange={vi.fn()} />);
+    render(<Input id="input" onChange={vi.fn()} />);
 
     const inputElement = screen.getByRole('textbox');
     expect(inputElement).toBeInTheDocument();
@@ -12,7 +12,9 @@ describe('Input Component', () => {
 
   it('should render the placeholder when provided', () => {
     const placeholderText = 'Enter text';
-    render(<Input placeholder={placeholderText} onChange={vi.fn()} />);
+    render(
+      <Input id="input" placeholder={placeholderText} onChange={vi.fn()} />
+    );
 
     const inputElement = screen.getByPlaceholderText(placeholderText);
     expect(inputElement).toBeInTheDocument();
@@ -20,7 +22,9 @@ describe('Input Component', () => {
 
   it('should call onChange with correct value when text is entered', () => {
     const handleChange = vi.fn();
-    render(<Input placeholder="Enter text" onChange={handleChange} />);
+    render(
+      <Input id="input" placeholder="Enter text" onChange={handleChange} />
+    );
 
     const inputElement = screen.getByPlaceholderText('Enter text');
 
@@ -30,7 +34,7 @@ describe('Input Component', () => {
   });
 
   it('should render the input with the correct class', () => {
-    const { container } = render(<Input onChange={vi.fn()} />);
+    const { container } = render(<Input id="input" onChange={vi.fn()} />);
 
     const inputElement = container.querySelector('input');
     expect(inputElement).toHaveClass(styles.input);

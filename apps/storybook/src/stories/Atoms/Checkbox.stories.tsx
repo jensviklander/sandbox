@@ -12,9 +12,6 @@ export default {
           'The Checkbox component allows users to make binary choices (checked/unchecked). It can optionally display a label next to the checkbox, making it useful for forms and selections.'
       }
     }
-  },
-  argTypes: {
-    label: { control: 'text' }
   }
 } as Meta;
 
@@ -24,6 +21,7 @@ const Template: StoryFn<React.ComponentProps<typeof Checkbox>> = (args) => {
   return (
     <Checkbox
       {...args}
+      id="checkbox"
       checked={isChecked}
       onChange={(checked) => setIsChecked(checked)}
     />
@@ -32,6 +30,5 @@ const Template: StoryFn<React.ComponentProps<typeof Checkbox>> = (args) => {
 
 export const Default = Template.bind({});
 Default.args = {
-  checked: false,
-  label: 'Label Text'
+  checked: false
 };

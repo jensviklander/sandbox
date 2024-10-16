@@ -245,7 +245,7 @@ describe('DataGrid Component', () => {
       const rows = container.querySelectorAll(
         'tbody tr'
       ) as NodeListOf<HTMLElement>;
-      expect(within(rows[0]).getByText('Alice')).toBeInTheDocument(); // Ascending
+      expect(within(rows[0]).getByText('Alice')).toBeInTheDocument();
     });
 
     const nameAscIcon = within(nameHeader).getByLabelText('sortAsc');

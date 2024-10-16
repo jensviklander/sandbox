@@ -18,7 +18,14 @@ export default {
 } as Meta;
 
 const Template: StoryFn<React.ComponentProps<typeof Input>> = (args) => {
-  return <Input {...args} onChange={() => {}} placeholder={args.placeholder} />;
+  return (
+    <Input
+      {...args}
+      id="input"
+      onChange={() => {}}
+      placeholder={args.placeholder}
+    />
+  );
 };
 
 export const Default = Template.bind({});

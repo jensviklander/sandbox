@@ -25,7 +25,7 @@
 }
 
 .checkbox:checked::before {
-  content: "✔";
+  content: '✔';
   color: var(--button-text-color);
   font-size: 10px;
   position: absolute;
@@ -43,21 +43,16 @@
   outline-offset: 2px;
 }
 
-[data-theme="dark"] .checkbox {
+[data-theme='dark'] .checkbox {
   background-color: var(--input-bg-color);
   border-color: var(--input-border-color);
 }
 
-[data-theme="dark"] .checkbox:checked {
+[data-theme='dark'] .checkbox:checked {
   background-color: var(--primary-color);
   border-color: var(--primary-color);
 }
 
-[data-theme="dark"] .checkbox:checked::before {
+[data-theme='dark'] .checkbox:checked::before {
   color: var(--button-text-color);
-}
-
-.labelText {
-  font-size: var(--paragraph-font-size);
-  color: var(--text-color);
 }

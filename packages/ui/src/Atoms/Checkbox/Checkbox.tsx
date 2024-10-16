@@ -1,25 +1,32 @@
 import styles from './Checkbox.module.css';
 
 interface CheckboxProps {
-  label?: string;
+  id: string;
   checked: boolean;
   onChange: (checked: boolean) => void;
+  required?: boolean;
+  ariaRequired?: boolean;
+  ariaInvalid?: boolean;
 }
 
 export const Checkbox: React.FC<CheckboxProps> = ({
-  label,
+  id,
   checked,
-  onChange
+  onChange,
+  required,
+  ariaRequired,
+  ariaInvalid
 }) => (
-  <label>
-    <div className={styles.wrapper}>
-      <input
-        className={styles.checkbox}
-        type="checkbox"
-        checked={checked}
-        onChange={(e) => onChange(e.target.checked)}
-      />
-      {label && <span className={styles.labelText}>{label}</span>}
-    </div>
-  </label>
+  <div className={styles.wrapper}>
+    <input
+      id={id}
+      className={styles.checkbox}
+      type="checkbox"
+      checked={checked}
+      onChange={(e) => onChange(e.target.checked)}
+      required={required}
+      aria-required={ariaRequired}
+      aria-invalid={ariaInvalid}
+    />
+  </div>
 );

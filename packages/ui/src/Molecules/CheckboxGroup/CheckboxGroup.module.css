@@ -1,0 +1,16 @@
+.checkboxGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.checkboxGroup.error input {
+  border-color: red;
+  background-color: var(--input-bg-color);
+}
+
+.checkboxMessage {
+  color: red;
+  font-size: var(--small-text-size);
+  margin-top: 4px;
+}

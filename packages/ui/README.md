@@ -4,11 +4,9 @@
 
 Add the following props to DataGrid:
 
-- borderless
 - loading
 - showHeader
 - sticky (if header should be sticky)
-- title
 
 ### Features
 
