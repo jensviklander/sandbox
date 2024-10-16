@@ -1,0 +1,4 @@
+import{j as h}from"./jsx-runtime-DEdD30eg.js";import{r as k}from"./index-RYns6xqu.js";import{C as r}from"./Checkbox-CmKp1B3M.js";const u={title:"Atoms/Checkbox",component:r,parameters:{docs:{description:{component:"The Checkbox component allows users to make binary choices (checked/unchecked). It can optionally display a label next to the checkbox, making it useful for forms and selections."}}}},i=c=>{const[a,n]=k.useState(c.checked);return h.jsx(r,{...c,id:"checkbox",checked:a,onChange:d=>n(d)})},e=i.bind({});e.args={checked:!1};var s,o,t;e.parameters={...e.parameters,docs:{...(s=e.parameters)==null?void 0:s.docs,source:{originalSource:`args => {
+  const [isChecked, setIsChecked] = useState(args.checked);
+  return <Checkbox {...args} id="checkbox" checked={isChecked} onChange={checked => setIsChecked(checked)} />;
+}`,...(t=(o=e.parameters)==null?void 0:o.docs)==null?void 0:t.source}}};const x=["Default"];export{e as Default,x as __namedExportsOrder,u as default};

@@ -1,0 +1,3 @@
+import{j as l}from"./jsx-runtime-DEdD30eg.js";import{L as s}from"./Label-DdGI5c9p.js";import"./index-RYns6xqu.js";const i={title:"Atoms/Label",component:s,parameters:{docs:{description:{component:"The Label component provides a text label for form elements like checkboxes or input fields. This story demonstrates the label without any associated form controls."}}}},m=a=>l.jsx(s,{...a}),e=m.bind({});e.args={htmlFor:"example",labelText:"Example Label"};var t,o,r;e.parameters={...e.parameters,docs:{...(t=e.parameters)==null?void 0:t.docs,source:{originalSource:`args => {
+  return <Label {...args} />;
+}`,...(r=(o=e.parameters)==null?void 0:o.docs)==null?void 0:r.source}}};const d=["Default"];export{e as Default,d as __namedExportsOrder,i as default};

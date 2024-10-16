@@ -1,0 +1,1 @@
+import{j as e}from"./jsx-runtime-DEdD30eg.js";import{I as a}from"./Input-C6W6lony.js";const n=({onSearch:o})=>e.jsx("div",{style:{display:"flex",alignItems:"center",gap:"10px"},children:e.jsx(a,{placeholder:"Search...",onChange:t=>o(t)})});n.__docgenInfo={description:"",methods:[],displayName:"DataGridControlMenu"};export{n as D};
