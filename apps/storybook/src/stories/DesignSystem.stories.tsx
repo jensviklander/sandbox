@@ -6,7 +6,7 @@ export default {
     docs: {
       description: {
         component:
-          'An overview of the global styles including colors, typography, and basic components like buttons and inputs.'
+          'An overview of the global styles including colors and typography.'
       }
     }
   }
@@ -37,7 +37,6 @@ export const Typography = () => (
   </div>
 );
 
-// Helper component to render color blocks
 const ColorBlock = ({ name, varName }: { name: string; varName: string }) => (
   <div
     style={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}
