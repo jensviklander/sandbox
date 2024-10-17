@@ -7,6 +7,7 @@ interface CheckboxProps {
   required?: boolean;
   ariaRequired?: boolean;
   ariaInvalid?: boolean;
+  onBlur?: () => void;
 }
 
 export const Checkbox: React.FC<CheckboxProps> = ({
@@ -15,7 +16,8 @@ export const Checkbox: React.FC<CheckboxProps> = ({
   onChange,
   required,
   ariaRequired,
-  ariaInvalid
+  ariaInvalid,
+  onBlur
 }) => (
   <div className={styles.wrapper}>
     <input
@@ -24,6 +26,7 @@ export const Checkbox: React.FC<CheckboxProps> = ({
       type="checkbox"
       checked={checked}
       onChange={(e) => onChange(e.target.checked)}
+      onBlur={onBlur}
       required={required}
       aria-required={ariaRequired}
       aria-invalid={ariaInvalid}

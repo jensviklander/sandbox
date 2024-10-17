@@ -10,6 +10,7 @@ interface InputGroupProps {
   required?: boolean;
   error?: string;
   onChange: (value: string) => void;
+  onBlur?: () => void;
 }
 
 export const InputGroup: React.FC<InputGroupProps> = ({
@@ -19,7 +20,8 @@ export const InputGroup: React.FC<InputGroupProps> = ({
   placeholder,
   required = false,
   error,
-  onChange
+  onChange,
+  onBlur
 }) => (
   <div className={`${styles.inputGroup} ${error ? styles.error : ''}`}>
     <Label htmlFor={id} labelText={labelText} />
@@ -29,6 +31,7 @@ export const InputGroup: React.FC<InputGroupProps> = ({
       type={type}
       placeholder={placeholder}
       onChange={onChange}
+      onBlur={onBlur}
       ariaInvalid={!!error}
       ariaRequired={required}
       required={required}

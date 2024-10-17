@@ -9,6 +9,7 @@ interface CheckboxGroupProps {
   onChange: (checked: boolean) => void;
   required?: boolean;
   error?: string;
+  onBlur?: () => void;
 }
 
 export const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
@@ -17,22 +18,25 @@ export const CheckboxGroup: React.FC<CheckboxGroupProps> = ({
   onChange,
   checked,
   required = false,
-  error
+  error,
+  onBlur
 }) => (
   <div className={`${styles.checkboxGroup} ${error ? styles.error : ''}`}>
-    <Checkbox
-      id={id}
-      onChange={onChange}
-      checked={checked}
-      ariaInvalid={!!error}
-      ariaRequired={required}
-      required={required}
-    />
-
-    <Label htmlFor={id} labelText={labelText} />
+    <div className={styles.checkboxContainer}>
+      <Checkbox
+        id={id}
+        onChange={onChange}
+        checked={checked}
+        ariaInvalid={!!error}
+        ariaRequired={required}
+        required={required}
+        onBlur={onBlur}
+      />
+      <Label htmlFor={id} labelText={labelText} />
+    </div>
 
     {error && (
-      <span className={styles.errorMessage} role="alert">
+      <span className={styles.checkboxMessage} role="alert">
         {error}
       </span>
     )}

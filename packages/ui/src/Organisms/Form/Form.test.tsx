@@ -2,13 +2,14 @@ import { render, screen, fireEvent, waitFor } from '@testing-library/react';
 import { Form } from './Form';
 
 vi.mock('../../Molecules/InputGroup/InputGroup', () => ({
-  InputGroup: ({ id, labelText, error, onChange }: any) => (
+  InputGroup: ({ id, labelText, error, onChange, onBlur }: any) => (
     <div data-testid={`input-group-${id}`}>
       <span>{labelText}</span>
       <input
         type="text"
         placeholder={labelText}
         onChange={(e) => onChange(e.target.value)}
+        onBlur={onBlur}
         aria-label={labelText}
         data-testid={`input-${id}`}
       />
@@ -18,13 +19,14 @@ vi.mock('../../Molecules/InputGroup/InputGroup', () => ({
 }));
 
 vi.mock('../../Molecules/CheckboxGroup/CheckboxGroup', () => ({
-  CheckboxGroup: ({ id, labelText, error, onChange, checked }: any) => (
+  CheckboxGroup: ({ id, labelText, error, onChange, onBlur, checked }: any) => (
     <div data-testid={`checkbox-group-${id}`}>
       <span>{labelText}</span>
       <input
         type="checkbox"
         checked={checked}
         onChange={(e) => onChange(e.target.checked)}
+        onBlur={onBlur}
         aria-label={labelText}
         data-testid={`checkbox-${id}`}
       />
@@ -150,5 +152,80 @@ describe('Form Component', () => {
     });
 
     expect(mockOnSubmit).not.toHaveBeenCalled();
+  });
+
+  it('should call validateField when handleChange is called with a touched field', () => {
+    render(
+      <Form fields={fields} onSubmit={mockOnSubmit} buttonText="Submit" />
+    );
+
+    const usernameInput = screen.getByTestId('input-username');
+    fireEvent.focus(usernameInput);
+    fireEvent.blur(usernameInput);
+
+    fireEvent.change(usernameInput, { target: { value: 'newUser' } });
+
+    expect(usernameInput).toHaveValue('newUser');
+    expect(screen.queryByTestId('error-username')).not.toBeInTheDocument();
+  });
+
+  it('should set touched state and validate when checkbox is blurred', async () => {
+    render(
+      <Form fields={fields} onSubmit={mockOnSubmit} buttonText="Submit" />
+    );
+
+    const checkboxInput = screen.getByTestId('checkbox-terms');
+
+    fireEvent.focus(checkboxInput);
+    fireEvent.blur(checkboxInput);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('error-terms')).toHaveTextContent(
+        'Accept Terms and Conditions is required'
+      );
+    });
+
+    fireEvent.click(checkboxInput);
+    fireEvent.blur(checkboxInput);
+
+    await waitFor(() => {
+      expect(screen.queryByTestId('error-terms')).not.toBeInTheDocument();
+    });
+  });
+
+  it('should set touched state in handleBlur and validate the field', async () => {
+    render(
+      <Form fields={fields} onSubmit={mockOnSubmit} buttonText="Submit" />
+    );
+
+    const emailInput = screen.getByTestId('input-email');
+    fireEvent.focus(emailInput);
+    fireEvent.blur(emailInput);
+
+    await waitFor(() => {
+      expect(screen.getByTestId('error-email')).toHaveTextContent(
+        'Email is required'
+      );
+    });
+  });
+
+  it('should call validateField and set/remove errors correctly', () => {
+    render(
+      <Form fields={fields} onSubmit={mockOnSubmit} buttonText="Submit" />
+    );
+
+    const passwordInput = screen.getByTestId('input-password');
+
+    fireEvent.focus(passwordInput);
+    fireEvent.blur(passwordInput);
+
+    expect(screen.getByTestId('error-password')).toHaveTextContent(
+      'Password is required'
+    );
+
+    fireEvent.change(passwordInput, { target: { value: 'password123' } });
+
+    expect(passwordInput).toHaveValue('password123');
+    expect(screen.queryByTestId('error-password')).not.toBeInTheDocument();
   });
 });

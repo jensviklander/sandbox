@@ -21,6 +21,7 @@ interface FormProps {
   buttonText: string;
 }
 
+// TODO: Add RadioGroup component..
 export const Form: React.FC<FormProps> = ({ fields, onSubmit, buttonText }) => {
   const initialFormState = fields.reduce(
     (acc, field) => {
@@ -33,13 +34,35 @@ export const Form: React.FC<FormProps> = ({ fields, onSubmit, buttonText }) => {
 
   const [formData, setFormData] = useState(initialFormState);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
 
   const handleChange = (name: string, value: string | boolean) => {
     setFormData((prevData) => ({ ...prevData, [name]: value }));
-    setErrors((prevErrors) => {
-      const { [name]: removedError, ...restErrors } = prevErrors;
-      return restErrors;
-    });
+
+    if (touched[name]) {
+      validateField(name, value);
+    }
+  };
+
+  const handleBlur = (name: string) => {
+    setTouched((prevTouched) => ({ ...prevTouched, [name]: true }));
+
+    validateField(name, formData[name]);
+  };
+
+  const validateField = (name: string, value: string | boolean) => {
+    const field = fields.find((f) => f.name === name);
+    if (field?.required && !value) {
+      setErrors((prevErrors) => ({
+        ...prevErrors,
+        [name]: `${field.label} is required`
+      }));
+    } else {
+      setErrors((prevErrors) => {
+        const { [name]: removedError, ...restErrors } = prevErrors;
+        return restErrors;
+      });
+    }
   };
 
   const validate = () => {
@@ -73,6 +96,7 @@ export const Form: React.FC<FormProps> = ({ fields, onSubmit, buttonText }) => {
                 labelText={field.label}
                 checked={formData[field.name] as boolean}
                 onChange={(checked) => handleChange(field.name, checked)}
+                onBlur={() => handleBlur(field.name)}
                 required={field.required}
                 error={errors[field.name]}
               />
@@ -88,6 +112,7 @@ export const Form: React.FC<FormProps> = ({ fields, onSubmit, buttonText }) => {
               type={field.type}
               placeholder={field.placeholder}
               onChange={(value) => handleChange(field.name, value)}
+              onBlur={() => handleBlur(field.name)}
               required={field.required}
               error={errors[field.name]}
             />

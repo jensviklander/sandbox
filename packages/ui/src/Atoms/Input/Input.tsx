@@ -8,6 +8,7 @@ interface InputProps {
   ariaRequired?: boolean;
   ariaInvalid?: boolean;
   onChange: (value: string) => void;
+  onBlur?: () => void;
 }
 
 export const Input: React.FC<InputProps> = ({
@@ -17,7 +18,8 @@ export const Input: React.FC<InputProps> = ({
   required = false,
   ariaRequired,
   ariaInvalid,
-  onChange
+  onChange,
+  onBlur
 }) => {
   return (
     <input
@@ -28,6 +30,7 @@ export const Input: React.FC<InputProps> = ({
       aria-required={ariaRequired ? 'true' : undefined}
       aria-invalid={ariaInvalid ? 'true' : undefined}
       onChange={(e) => onChange(e.target.value)}
+      onBlur={onBlur}
       className={styles.input}
     />
   );
