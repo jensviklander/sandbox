@@ -9,7 +9,7 @@ export default {
     docs: {
       description: {
         component:
-          'The Form component allows for a dynamic and reusable form structure that supports various input types like text, email, password, and checkbox. It validates required fields and handles form submissions.'
+          'The Form component allows for a dynamic and reusable form structure that supports various input types like text, email, password, checkbox, and radio. It validates required fields and handles form submissions.'
       }
     }
   },
@@ -101,4 +101,51 @@ WithOptionalFields.args = {
     }
   ],
   onSubmit: action('Form Submitted with Optional Fields')
+};
+
+export const WithRadioGroup = Template.bind({});
+WithRadioGroup.args = {
+  buttonText: 'Submit',
+  fields: [
+    {
+      name: 'username',
+      label: 'Username',
+      type: 'text',
+      placeholder: 'Enter your username',
+      required: true
+    },
+    {
+      name: 'gender',
+      label: 'Gender',
+      type: 'radio',
+      required: true,
+      options: [
+        { value: 'male', label: 'Male' },
+        { value: 'female', label: 'Female' },
+        { value: 'other', label: 'Other' }
+      ]
+    },
+    {
+      name: 'email',
+      label: 'Email',
+      type: 'email',
+      placeholder: 'Enter your email',
+      required: true
+    },
+    {
+      name: 'password',
+      label: 'Password',
+      type: 'password',
+      placeholder: 'Enter your password',
+      required: true
+    },
+    {
+      name: 'acceptTerms',
+      label: 'Accept Terms and Conditions',
+      type: 'checkbox',
+      required: true,
+      defaultValue: false
+    }
+  ],
+  onSubmit: action('Form Submitted with Radio Group')
 };

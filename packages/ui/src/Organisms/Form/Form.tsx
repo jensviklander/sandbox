@@ -1,10 +1,11 @@
 import { useState } from 'react';
 import { InputGroup } from '../../Molecules/InputGroup/InputGroup';
 import { CheckboxGroup } from '../../Molecules/CheckboxGroup/CheckboxGroup';
+import { RadioGroup } from '../../Molecules/RadioGroup/RadioGroup';
 import { Button } from '../../Atoms/Button/Button';
 import styles from './Form.module.css';
 
-type FieldType = 'text' | 'email' | 'password' | 'checkbox';
+type FieldType = 'text' | 'email' | 'password' | 'checkbox' | 'radio';
 
 interface Field {
   name: string;
@@ -13,6 +14,7 @@ interface Field {
   placeholder?: string;
   required?: boolean;
   defaultValue?: string | boolean;
+  options?: { value: string; label: string }[];
 }
 
 interface FormProps {
@@ -21,7 +23,6 @@ interface FormProps {
   buttonText: string;
 }
 
-// TODO: Add RadioGroup component..
 export const Form: React.FC<FormProps> = ({ fields, onSubmit, buttonText }) => {
   const initialFormState = fields.reduce(
     (acc, field) => {
@@ -104,20 +105,39 @@ export const Form: React.FC<FormProps> = ({ fields, onSubmit, buttonText }) => {
           );
         }
 
-        return (
-          <div key={field.name}>
-            <InputGroup
-              id={field.name}
-              labelText={field.label}
-              type={field.type}
-              placeholder={field.placeholder}
-              onChange={(value) => handleChange(field.name, value)}
-              onBlur={() => handleBlur(field.name)}
-              required={field.required}
-              error={errors[field.name]}
-            />
-          </div>
-        );
+        if (field.type === 'radio' && field.options) {
+          return (
+            <div key={field.name}>
+              <RadioGroup
+                id={field.name}
+                labelText={field.label}
+                options={field.options}
+                selectedValue={formData[field.name] as string}
+                onChange={(value) => handleChange(field.name, value)}
+                onBlur={() => handleBlur(field.name)}
+                required={field.required}
+                error={errors[field.name]}
+              />
+            </div>
+          );
+        }
+
+        if (['text', 'email', 'password'].includes(field.type)) {
+          return (
+            <div key={field.name}>
+              <InputGroup
+                id={field.name}
+                labelText={field.label}
+                type={field.type as 'text' | 'email' | 'password'}
+                placeholder={field.placeholder}
+                onChange={(value) => handleChange(field.name, value)}
+                onBlur={() => handleBlur(field.name)}
+                required={field.required}
+                error={errors[field.name]}
+              />
+            </div>
+          );
+        }
       })}
       <div className={styles.buttonWrapper}>
         <Button id="submit-button" type="submit" ariaLabel="Submit form">

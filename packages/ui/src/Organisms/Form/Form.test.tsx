@@ -35,6 +35,38 @@ vi.mock('../../Molecules/CheckboxGroup/CheckboxGroup', () => ({
   )
 }));
 
+vi.mock('../../Molecules/RadioGroup/RadioGroup', () => ({
+  RadioGroup: ({
+    id,
+    labelText,
+    options,
+    error,
+    onChange,
+    onBlur,
+    selectedValue
+  }: any) => (
+    <div data-testid={`radio-group-${id}`}>
+      <span>{labelText}</span>
+      {options.map((option: any) => (
+        <div key={option.value}>
+          <input
+            type="radio"
+            name={id}
+            value={option.value}
+            checked={selectedValue === option.value}
+            onChange={() => onChange(option.value)}
+            onBlur={onBlur}
+            aria-label={option.label}
+            data-testid={`radio-${id}-${option.value}`}
+          />
+          <label>{option.label}</label>
+        </div>
+      ))}
+      {error && <span data-testid={`error-${id}`}>{error}</span>}
+    </div>
+  )
+}));
+
 describe('Form Component', () => {
   const fields = [
     {
@@ -55,6 +87,17 @@ describe('Form Component', () => {
       label: 'Accept Terms and Conditions',
       type: 'checkbox' as const,
       required: true
+    },
+    {
+      name: 'gender',
+      label: 'Gender',
+      type: 'radio' as const,
+      required: true,
+      options: [
+        { value: 'male', label: 'Male' },
+        { value: 'female', label: 'Female' },
+        { value: 'other', label: 'Other' }
+      ]
     }
   ];
 
@@ -73,6 +116,7 @@ describe('Form Component', () => {
     expect(screen.getByTestId('input-group-email')).toBeInTheDocument();
     expect(screen.getByTestId('input-group-password')).toBeInTheDocument();
     expect(screen.getByTestId('checkbox-group-terms')).toBeInTheDocument();
+    expect(screen.getByTestId('radio-group-gender')).toBeInTheDocument();
 
     expect(screen.getByRole('button', { name: /submit/i })).toBeInTheDocument();
   });
@@ -97,6 +141,10 @@ describe('Form Component', () => {
     const checkbox = screen.getByTestId('checkbox-terms');
     fireEvent.click(checkbox);
     expect(checkbox).toBeChecked();
+
+    const radioMale = screen.getByTestId('radio-gender-male');
+    fireEvent.click(radioMale);
+    expect(radioMale).toBeChecked();
   });
 
   it('should call onSubmit with the correct values when the form is submitted', async () => {
@@ -114,6 +162,7 @@ describe('Form Component', () => {
       target: { value: 'password123' }
     });
     fireEvent.click(screen.getByTestId('checkbox-terms'));
+    fireEvent.click(screen.getByTestId('radio-gender-male'));
 
     const submitButton = screen.getByRole('button', { name: /submit/i });
     fireEvent.click(submitButton);
@@ -123,7 +172,8 @@ describe('Form Component', () => {
         username: 'user123',
         email: 'user@example.com',
         password: 'password123',
-        terms: true
+        terms: true,
+        gender: 'male'
       });
     });
   });
@@ -149,9 +199,32 @@ describe('Form Component', () => {
       expect(screen.getByTestId('error-terms')).toHaveTextContent(
         'Accept Terms and Conditions is required'
       );
+      expect(screen.getByTestId('error-gender')).toHaveTextContent(
+        'Gender is required'
+      );
     });
 
     expect(mockOnSubmit).not.toHaveBeenCalled();
+  });
+
+  it('should call validateField and set/remove errors correctly for radio group', () => {
+    render(
+      <Form fields={fields} onSubmit={mockOnSubmit} buttonText="Submit" />
+    );
+
+    const radioFemale = screen.getByTestId('radio-gender-female');
+
+    fireEvent.focus(radioFemale);
+    fireEvent.blur(radioFemale);
+
+    expect(screen.getByTestId('error-gender')).toHaveTextContent(
+      'Gender is required'
+    );
+
+    fireEvent.click(radioFemale);
+    expect(radioFemale).toBeChecked();
+
+    expect(screen.queryByTestId('error-gender')).not.toBeInTheDocument();
   });
 
   it('should call validateField when handleChange is called with a touched field', () => {

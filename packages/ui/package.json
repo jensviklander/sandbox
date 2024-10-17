@@ -21,6 +21,8 @@
     "./label": "./src/Atoms/Label/Label.tsx",
     "./link": "./src/Atoms/Link/Link.tsx",
     "./pagination": "./src/Molecules/Pagination/Pagination.tsx",
+    "./radio": "./src/Atoms/Radio/Radio.tsx",
+    "./radiogroup": "./src/Molecules/RadioGroup/RadioGroup.tsx",
     "./types": "./src/types/types.ts"
   },
   "scripts": {
