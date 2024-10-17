@@ -26,6 +26,12 @@ const preview: Preview = {
         { name: 'light', value: 'var(--background-color)' },
         { name: 'dark', value: 'var(--background-color)' }
       ]
+    },
+    options: {
+      storySort: {
+        method: 'alphabetical',
+        order: ['Design System', 'Atoms', 'Molecules', 'Organisms']
+      }
     }
   },
   tags: ['autodocs'],
