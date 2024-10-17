@@ -32,6 +32,9 @@ const preview: Preview = {
         method: 'alphabetical',
         order: ['Design System', 'Atoms', 'Molecules', 'Organisms']
       }
+    },
+    docs: {
+      title: 'Component Library'
     }
   },
   tags: ['autodocs'],
