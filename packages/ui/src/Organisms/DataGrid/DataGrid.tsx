@@ -166,7 +166,7 @@ export default function DataGrid<T extends { id: string }>({
 
   const handleDeleteSelectedRows = () => {
     if (onDeleteSelected) {
-      onDeleteSelected(); // We are missing test for this line
+      onDeleteSelected();
     } else {
       const updatedData = tableData.filter(
         (row) => !selectedRowsInternal.includes(row.id)
