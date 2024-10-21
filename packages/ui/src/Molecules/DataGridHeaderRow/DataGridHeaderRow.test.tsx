@@ -194,4 +194,96 @@ describe('DataGridHeaderRow Component', () => {
     const spacerCell = container.querySelector(`th.${styles.spacerCell}`);
     expect(spacerCell).toHaveClass(styles.borderless);
   });
+
+  it("should render the delete button when 'showMultiDelete' is true", () => {
+    const handleDeleteSelected = vi.fn();
+    render(
+      <table>
+        <thead>
+          <DataGridHeaderRow
+            columns={columns}
+            showMultiDelete={true}
+            onDeleteSelected={handleDeleteSelected}
+          />
+        </thead>
+      </table>
+    );
+
+    const deleteButton = screen.getByRole('button', { name: /trash/i });
+    expect(deleteButton).toBeInTheDocument();
+
+    fireEvent.click(deleteButton);
+    expect(handleDeleteSelected).toHaveBeenCalled();
+  });
+
+  it("should not render the delete button when 'showMultiDelete' is false", () => {
+    render(
+      <table>
+        <thead>
+          <DataGridHeaderRow columns={columns} showMultiDelete={false} />
+        </thead>
+      </table>
+    );
+
+    const deleteButton = screen.queryByRole('button', { name: /trash/i });
+    expect(deleteButton).not.toBeInTheDocument();
+  });
+
+  it("should not render the delete button if 'onDeleteSelected' is not provided, even when 'showMultiDelete' is true", () => {
+    render(
+      <table>
+        <thead>
+          <DataGridHeaderRow columns={columns} showMultiDelete={true} />
+        </thead>
+      </table>
+    );
+
+    const deleteButton = screen.queryByRole('button', { name: /trash/i });
+    expect(deleteButton).not.toBeInTheDocument();
+  });
+
+  it('should apply the borderless class to the delete button cell when borderless is true', () => {
+    const handleDeleteSelected = vi.fn();
+    render(
+      <table>
+        <thead>
+          <DataGridHeaderRow
+            columns={columns}
+            showMultiDelete={true}
+            onDeleteSelected={handleDeleteSelected}
+            borderless={true}
+          />
+        </thead>
+      </table>
+    );
+
+    const deleteButtonCell = screen
+      .getByRole('button', { name: /trash/i })
+      .closest('th');
+    expect(deleteButtonCell).toHaveClass(
+      `${styles.iconCell} ${styles.borderless}`
+    );
+  });
+
+  it('should not apply the borderless class to the delete button cell when borderless is false', () => {
+    const handleDeleteSelected = vi.fn();
+    render(
+      <table>
+        <thead>
+          <DataGridHeaderRow
+            columns={columns}
+            showMultiDelete={true}
+            onDeleteSelected={handleDeleteSelected}
+            borderless={false}
+          />
+        </thead>
+      </table>
+    );
+
+    const deleteButtonCell = screen
+      .getByRole('button', { name: /trash/i })
+      .closest('th');
+    expect(deleteButtonCell).toHaveClass(styles.iconCell);
+    expect(deleteButtonCell).not.toHaveClass(styles.borderless);
+  });
 });

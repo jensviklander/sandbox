@@ -123,5 +123,14 @@ SortableAndSelectable.args = {
 export const Borderless = Template.bind({});
 Borderless.args = {
   columns,
-  borderless: true
+  borderless: true,
+  showMultiDelete: true,
+  onDeleteSelected: () => {}
+};
+
+export const WithMultiDelete = Template.bind({});
+WithMultiDelete.args = {
+  columns,
+  showMultiDelete: true,
+  onDeleteSelected: () => {}
 };

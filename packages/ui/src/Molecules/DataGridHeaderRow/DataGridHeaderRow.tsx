@@ -2,6 +2,7 @@ import { DataGridHeaderCell } from '../DataGridHeaderCell/DataGridHeaderCell';
 import { Checkbox } from '../../Atoms/Checkbox/Checkbox';
 import { ExtendedColumnDef } from '../../types/types';
 import { SortingState } from '@tanstack/react-table';
+import { IconButton } from '../../Atoms/IconButton/IconButton';
 import styles from './DataGridHeaderRow.module.css';
 
 interface DataGridHeaderRowProps<T> {
@@ -13,6 +14,8 @@ interface DataGridHeaderRowProps<T> {
   isSelectAllChecked?: boolean;
   sorting?: SortingState;
   borderless?: boolean;
+  showMultiDelete?: boolean;
+  onDeleteSelected?: () => void;
 }
 
 export const DataGridHeaderRow = <T,>({
@@ -23,7 +26,9 @@ export const DataGridHeaderRow = <T,>({
   onSortChange,
   isSelectAllChecked = false,
   sorting = [],
-  borderless = false
+  borderless = false,
+  showMultiDelete = false,
+  onDeleteSelected
 }: DataGridHeaderRowProps<T>) => {
   const handleSelectAllChange = (checked: boolean) => {
     onSelectAll && onSelectAll(checked);
@@ -42,6 +47,7 @@ export const DataGridHeaderRow = <T,>({
           />
         </th>
       )}
+
       {columns.map((column, index) => {
         const currentSort = sorting.find((s) => s.id === column.id);
         const sortOrder =
@@ -65,8 +71,18 @@ export const DataGridHeaderRow = <T,>({
       })}
 
       <th
-        className={`${styles.spacerCell} ${borderless ? styles.borderless : ''}`}
+        className={`${styles.spacerCell} ${
+          !showMultiDelete && !borderless ? styles.spacerWithRightBorder : ''
+        } ${borderless ? styles.borderless : ''}`}
       ></th>
+
+      {showMultiDelete && onDeleteSelected && (
+        <th
+          className={`${styles.iconCell} ${borderless ? styles.borderless : ''}`}
+        >
+          <IconButton icon="trash" type="danger" onClick={onDeleteSelected} />
+        </th>
+      )}
     </tr>
   );
 };

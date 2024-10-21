@@ -28,8 +28,21 @@
   flex-grow: 1;
   border-top: 1px solid var(--border-color);
   border-bottom: 1px solid var(--border-color);
-  border-right: 1px solid var(--border-color);
   min-height: 100%;
+}
+
+.spacerWithRightBorder {
+  border-right: 1px solid var(--border-color);
+}
+
+.iconCell {
+  text-align: right;
+  padding-right: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  border-top: 1px solid var(--border-color);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .borderless {

@@ -477,4 +477,59 @@ describe('DataGrid Component', () => {
     expect(screen.queryByText('Alice')).not.toBeInTheDocument();
     expect(screen.queryByText('Charlie')).not.toBeInTheDocument();
   });
+
+  it('should delete selected rows when the first delete button is clicked', () => {
+    const selectedRows = ['1', '2'];
+
+    const { rerender } = render(
+      <DataGrid
+        data={data}
+        columns={columns}
+        selectable={true}
+        selectedRows={selectedRows}
+        showDeleteButton={true}
+      />
+    );
+
+    expect(screen.getByText('Alice')).toBeInTheDocument();
+    expect(screen.getByText('Bob')).toBeInTheDocument();
+
+    const deleteButtons = screen.getAllByLabelText('trash');
+    fireEvent.click(deleteButtons[0]);
+
+    rerender(
+      <DataGrid
+        data={data.filter((item) => !selectedRows.includes(item.id))}
+        columns={columns}
+        selectable={true}
+        showDeleteButton={true}
+      />
+    );
+
+    expect(screen.queryByText('Alice')).not.toBeInTheDocument();
+    expect(screen.queryByText('Bob')).not.toBeInTheDocument();
+
+    expect(screen.getByText('Charlie')).toBeInTheDocument();
+  });
+
+  it('should call onDeleteSelected when the delete selected button is clicked', () => {
+    const handleDeleteSelected = vi.fn();
+    const selectedRows = ['1', '2'];
+
+    render(
+      <DataGrid
+        data={data}
+        columns={columns}
+        selectable={true}
+        selectedRows={selectedRows}
+        showDeleteButton={true}
+        onDeleteSelected={handleDeleteSelected}
+      />
+    );
+
+    const deleteButtons = screen.getAllByLabelText('trash');
+    fireEvent.click(deleteButtons[0]);
+
+    expect(handleDeleteSelected).toHaveBeenCalled();
+  });
 });

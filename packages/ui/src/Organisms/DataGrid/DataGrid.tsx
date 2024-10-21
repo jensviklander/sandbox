@@ -30,9 +30,9 @@ interface DataGridProps<T> {
   showDeleteButton?: boolean;
   showStatistics?: boolean;
   borderless?: boolean;
+  onDeleteSelected?: () => void;
 }
 
-// TODO: Add delete multiple rows, icon in header, should only be visible when more than one component is selected. Color red
 // TODO: Add radio selection
 export default function DataGrid<T extends { id: string }>({
   title,
@@ -50,7 +50,8 @@ export default function DataGrid<T extends { id: string }>({
   onSelectRow,
   showDeleteButton = false,
   showStatistics = false,
-  borderless = false
+  borderless = false,
+  onDeleteSelected
 }: DataGridProps<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [initialData] = useState<T[]>(data);
@@ -59,6 +60,8 @@ export default function DataGrid<T extends { id: string }>({
   const [totalPages, setTotalPages] = useState<number>(
     Math.ceil(tableData.length / pageSize)
   );
+  const [selectedRowsInternal, setSelectedRowsInternal] =
+    useState<string[]>(selectedRows);
 
   const table = useReactTable({
     data: tableData,
@@ -82,7 +85,7 @@ export default function DataGrid<T extends { id: string }>({
   }, [tableData, pageSize]);
 
   const handlePageChange = (newPageIndex: number) => {
-    selectedRows.length = 0;
+    setSelectedRowsInternal([]);
     setPageIndex(newPageIndex);
     onPageChange?.(newPageIndex);
   };
@@ -90,15 +93,23 @@ export default function DataGrid<T extends { id: string }>({
   const handleSelectAllChange = (checked: boolean) => {
     if (checked) {
       const allRowIds = table.getRowModel().rows.map((row) => row.id);
-      allRowIds.forEach((id) => {
-        if (!selectedRows.includes(id)) {
-          onSelectRow && onSelectRow(id, true);
-        }
-      });
+      setSelectedRowsInternal(allRowIds);
+      allRowIds.forEach((id) => onSelectRow && onSelectRow(id, true));
     } else {
-      selectedRows.forEach((id) => {
-        onSelectRow && onSelectRow(id, false);
-      });
+      setSelectedRowsInternal([]);
+      selectedRowsInternal.forEach(
+        (id) => onSelectRow && onSelectRow(id, false)
+      );
+    }
+  };
+
+  const handleRowSelectChange = (rowId: string, checked: boolean) => {
+    if (checked) {
+      setSelectedRowsInternal((prev) => [...prev, rowId]);
+      onSelectRow && onSelectRow(rowId, true);
+    } else {
+      setSelectedRowsInternal((prev) => prev.filter((id) => id !== rowId));
+      onSelectRow && onSelectRow(rowId, false);
     }
   };
 
@@ -153,6 +164,18 @@ export default function DataGrid<T extends { id: string }>({
     setTableData(updatedData);
   };
 
+  const handleDeleteSelectedRows = () => {
+    if (onDeleteSelected) {
+      onDeleteSelected(); // We are missing test for this line
+    } else {
+      const updatedData = tableData.filter(
+        (row) => !selectedRowsInternal.includes(row.id)
+      );
+      setTableData(updatedData);
+      setSelectedRowsInternal([]);
+    }
+  };
+
   return (
     <div className={styles.tableWrapper}>
       {title && <h2 className={styles.tableTitle}>{title}</h2>}
@@ -173,34 +196,36 @@ export default function DataGrid<T extends { id: string }>({
               onSelectAll={handleSelectAllChange}
               onSortChange={handleSortChange}
               isSelectAllChecked={
-                selectedRows.length === table.getRowModel().rows.length
+                selectedRowsInternal.length === table.getRowModel().rows.length
               }
               borderless={borderless}
+              showMultiDelete={
+                showDeleteButton && selectedRowsInternal.length > 1
+              }
+              onDeleteSelected={handleDeleteSelectedRows}
             />
           </thead>
         )}
         <tbody>
           {tableData.length > 0 ? (
-            table.getRowModel().rows.map((row) => (
-              <DataGridRow
-                key={row.id}
-                rowData={row.original}
-                columns={columns}
-                onDeleteRow={handleDeleteRow}
-                showDeleteButton={showDeleteButton}
-                rowIndex={table.getRowModel().rows.indexOf(row)}
-                selectable={selectable}
-                isSelected={selectedRows.includes(row.id)}
-                onSelectRow={(checked) => {
-                  if (checked && !selectedRows.includes(row.id)) {
-                    onSelectRow && onSelectRow(row.id, true);
-                  } else if (!checked && selectedRows.includes(row.id)) {
-                    onSelectRow && onSelectRow(row.id, false);
+            table
+              .getRowModel()
+              .rows.map((row) => (
+                <DataGridRow
+                  key={row.id}
+                  rowData={row.original}
+                  columns={columns}
+                  onDeleteRow={handleDeleteRow}
+                  showDeleteButton={showDeleteButton}
+                  rowIndex={table.getRowModel().rows.indexOf(row)}
+                  selectable={selectable}
+                  isSelected={selectedRowsInternal.includes(row.id)}
+                  onSelectRow={(checked) =>
+                    handleRowSelectChange(row.id, checked)
                   }
-                }}
-                borderless={borderless}
-              />
-            ))
+                  borderless={borderless}
+                />
+              ))
           ) : (
             <tr>
               <td colSpan={columns.length} className={styles.emptyTableMessage}>
