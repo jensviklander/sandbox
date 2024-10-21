@@ -32,7 +32,6 @@ interface DataGridProps<T> {
   borderless?: boolean;
 }
 
-// FIXME: Size changes when removing data in table or filtering data where results are less than initial data..
 // TODO: Add delete multiple rows, icon in header, should only be visible when more than one component is selected. Color red
 // TODO: Add radio selection
 export default function DataGrid<T extends { id: string }>({

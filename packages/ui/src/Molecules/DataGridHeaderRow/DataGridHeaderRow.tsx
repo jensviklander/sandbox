@@ -36,6 +36,7 @@ export const DataGridHeaderRow = <T,>({
           className={`${styles.checkboxCell} ${borderless ? styles.borderless : ''}`}
         >
           <Checkbox
+            id="data-grid-header-select-all-checkbox"
             onChange={handleSelectAllChange}
             checked={isSelectAllChecked}
           />
@@ -52,7 +53,7 @@ export const DataGridHeaderRow = <T,>({
 
         return (
           <DataGridHeaderCell
-            key={column.id || index} // this is not covered in branch
+            key={column.id || index}
             label={String(column.header)}
             sortable={enableSorting}
             sortOrder={sortOrder}

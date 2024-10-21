@@ -38,6 +38,7 @@ export const DataGridRow = <T extends { id: string }>({
           className={`${styles.checkboxCell} ${borderless ? styles.borderless : ''}`}
         >
           <Checkbox
+            id="data-grid-row-selection"
             checked={isSelected}
             onChange={(checked) => onSelectRow && onSelectRow(checked)}
           />
