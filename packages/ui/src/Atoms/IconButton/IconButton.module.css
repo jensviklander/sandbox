@@ -9,3 +9,19 @@
   color: var(--secondary-color);
   font-size: var(--base-font-size);
 }
+
+.button.primary {
+  color: var(--primary-color);
+}
+
+.button.secondary {
+  color: var(--secondary-color);
+}
+
+.button.danger {
+  color: var(--danger-color);
+}
+
+.button:hover {
+  opacity: 0.8;
+}

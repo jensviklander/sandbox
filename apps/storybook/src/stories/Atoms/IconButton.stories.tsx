@@ -28,15 +28,44 @@ export default {
         options: Object.keys(iconMapping) as Array<keyof typeof iconMapping>
       },
       description: 'Select the icon to display'
+    },
+    type: {
+      control: {
+        type: 'select',
+        options: ['primary', 'secondary', 'danger']
+      },
+      description: 'The color type of the button',
+      defaultValue: 'secondary'
     }
   }
 } as Meta;
 
-const Template: StoryFn<{ icon: keyof typeof iconMapping }> = (args) => (
-  <IconButton {...args} onClick={() => {}} />
-);
+const Template: StoryFn<{
+  icon: keyof typeof iconMapping;
+  type: 'primary' | 'secondary' | 'danger';
+}> = (args) => {
+  return <IconButton {...args} onClick={() => alert('Button clicked!')} />;
+};
 
 export const Default = Template.bind({});
 Default.args = {
   icon: 'trash'
+};
+
+export const PrimaryColor = Template.bind({});
+PrimaryColor.args = {
+  icon: 'trash',
+  type: 'primary'
+};
+
+export const SecondaryColor = Template.bind({});
+SecondaryColor.args = {
+  icon: 'trash',
+  type: 'secondary'
+};
+
+export const DangerColor = Template.bind({});
+DangerColor.args = {
+  icon: 'trash',
+  type: 'danger'
 };
