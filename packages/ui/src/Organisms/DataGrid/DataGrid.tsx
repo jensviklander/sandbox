@@ -13,7 +13,7 @@ import {
 import { ExtendedColumnDef } from '../../types/types';
 import styles from './DataGrid.module.css';
 
-interface DataGridProps<T> {
+interface DataGridProps<T extends { id: string }> {
   title?: string;
   data: T[];
   columns: ExtendedColumnDef<T, any>[];
@@ -31,9 +31,10 @@ interface DataGridProps<T> {
   showStatistics?: boolean;
   borderless?: boolean;
   onDeleteSelected?: () => void;
+  getSubRows?: (row: T) => T[] | undefined;
 }
 
-// TODO: Add radio selection
+// TODO: Fix group selection
 export default function DataGrid<T extends { id: string }>({
   title,
   data,
@@ -51,7 +52,8 @@ export default function DataGrid<T extends { id: string }>({
   showDeleteButton = false,
   showStatistics = false,
   borderless = false,
-  onDeleteSelected
+  onDeleteSelected,
+  getSubRows
 }: DataGridProps<T>) {
   const [sorting, setSorting] = useState<SortingState>([]);
   const [initialData] = useState<T[]>(data);
@@ -77,7 +79,8 @@ export default function DataGrid<T extends { id: string }>({
     getPaginationRowModel: enablePagination
       ? getPaginationRowModel()
       : undefined,
-    manualPagination: !enablePagination
+    manualPagination: !enablePagination,
+    getSubRows: getSubRows
   });
 
   useEffect(() => {
@@ -217,13 +220,13 @@ export default function DataGrid<T extends { id: string }>({
                   columns={columns}
                   onDeleteRow={handleDeleteRow}
                   showDeleteButton={showDeleteButton}
-                  rowIndex={table.getRowModel().rows.indexOf(row)}
                   selectable={selectable}
                   isSelected={selectedRowsInternal.includes(row.id)}
                   onSelectRow={(checked) =>
                     handleRowSelectChange(row.id, checked)
                   }
                   borderless={borderless}
+                  subRows={row.subRows?.map((subRow) => subRow.original)}
                 />
               ))
           ) : (

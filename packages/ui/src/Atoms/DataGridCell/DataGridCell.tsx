@@ -4,15 +4,19 @@ interface DataGridCellProps {
   children: React.ReactNode;
   width: number;
   borderless?: boolean;
+  isSubRow?: boolean;
 }
 
 export const DataGridCell: React.FC<DataGridCellProps> = ({
   children,
   width,
-  borderless = false
+  borderless = false,
+  isSubRow = false
 }) => (
   <td
-    className={`${styles.cell} ${borderless ? styles.borderless : ''}`}
+    className={`${styles.cell} ${borderless ? styles.borderless : ''} ${
+      isSubRow ? styles.subRowCell : ''
+    }`}
     style={{ width }}
   >
     {children}

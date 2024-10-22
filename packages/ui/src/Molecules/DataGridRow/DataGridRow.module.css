@@ -4,11 +4,11 @@
   width: 100%;
 }
 
-.evenRow {
+.tableRow:nth-child(even) {
   background-color: var(--even-row-color);
 }
 
-.oddRow {
+.tableRow:nth-child(odd) {
   background-color: var(--odd-row-color);
 }
 

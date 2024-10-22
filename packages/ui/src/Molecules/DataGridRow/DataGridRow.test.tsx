@@ -25,7 +25,6 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columns}
             onDeleteRow={vi.fn()}
-            rowIndex={0}
           />
         </tbody>
       </table>
@@ -48,7 +47,6 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columns}
             onDeleteRow={vi.fn()}
-            rowIndex={0}
             selectable={true}
             isSelected={false}
             onSelectRow={handleSelectRow}
@@ -74,7 +72,6 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columns}
             onDeleteRow={handleDeleteRow}
-            rowIndex={0}
             showDeleteButton={true}
           />
         </tbody>
@@ -95,7 +92,6 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columns}
             onDeleteRow={vi.fn()}
-            rowIndex={0}
             showDeleteButton={false}
           />
         </tbody>
@@ -114,7 +110,6 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columns}
             onDeleteRow={vi.fn()}
-            rowIndex={0}
           />
         </tbody>
       </table>
@@ -122,42 +117,6 @@ describe('DataGridRow Component', () => {
 
     const spacerCell = container.querySelector(`.${styles.spacerCell}`);
     expect(spacerCell).toBeInTheDocument();
-  });
-
-  it('should apply evenRow style for even rows', () => {
-    const { container } = render(
-      <table>
-        <tbody>
-          <DataGridRow
-            rowData={rowData}
-            columns={columns}
-            onDeleteRow={vi.fn()}
-            rowIndex={0}
-          />
-        </tbody>
-      </table>
-    );
-
-    const rowElement = container.querySelector('tr');
-    expect(rowElement).toHaveClass(styles.evenRow);
-  });
-
-  it('should apply oddRow style for odd rows', () => {
-    const { container } = render(
-      <table>
-        <tbody>
-          <DataGridRow
-            rowData={rowData}
-            columns={columns}
-            onDeleteRow={vi.fn()}
-            rowIndex={1}
-          />
-        </tbody>
-      </table>
-    );
-
-    const rowElement = container.querySelector('tr');
-    expect(rowElement).toHaveClass(styles.oddRow);
   });
 
   it('should render cell content using accessorFn when provided', () => {
@@ -178,7 +137,6 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columnsWithAccessorFn}
             onDeleteRow={vi.fn()}
-            rowIndex={0}
           />
         </tbody>
       </table>
@@ -200,7 +158,6 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columnsWithoutAccessor}
             onDeleteRow={vi.fn()}
-            rowIndex={0}
           />
         </tbody>
       </table>
@@ -224,7 +181,6 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columnsWithoutId}
             onDeleteRow={vi.fn()}
-            rowIndex={0}
           />
         </tbody>
       </table>
@@ -248,7 +204,6 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columnsWithWidth}
             onDeleteRow={vi.fn()}
-            rowIndex={0}
           />
         </tbody>
       </table>
@@ -270,7 +225,6 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columnsWithoutWidth}
             onDeleteRow={vi.fn()}
-            rowIndex={0}
           />
         </tbody>
       </table>
@@ -288,7 +242,6 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columns}
             onDeleteRow={vi.fn()}
-            rowIndex={0}
             selectable={true}
             isSelected={false}
             borderless={true}
@@ -312,7 +265,6 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columns}
             onDeleteRow={vi.fn()}
-            rowIndex={0}
             showDeleteButton={false}
             borderless={false}
           />
@@ -332,7 +284,6 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columns}
             onDeleteRow={vi.fn()}
-            rowIndex={0}
             showDeleteButton={true}
             borderless={true}
           />
@@ -342,5 +293,51 @@ describe('DataGridRow Component', () => {
 
     const deleteButtonCell = screen.getByRole('cell', { name: /trash/i });
     expect(deleteButtonCell).toHaveClass(styles.borderless);
+  });
+
+  it('should render subRows when provided', () => {
+    const subRowData: RowData[] = [
+      { id: '2', name: 'Jane Doe', age: 25 },
+      { id: '3', name: 'Jim Doe', age: 35 }
+    ];
+
+    render(
+      <table>
+        <tbody>
+          <DataGridRow
+            rowData={rowData}
+            columns={columns}
+            onDeleteRow={vi.fn()}
+            subRows={subRowData}
+          />
+        </tbody>
+      </table>
+    );
+
+    const janeRow = screen.getByText('Jane Doe');
+    const jimRow = screen.getByText('Jim Doe');
+
+    expect(janeRow).toBeInTheDocument();
+    expect(jimRow).toBeInTheDocument();
+  });
+
+  it('should render subRows with isSubRow set to true', () => {
+    const subRowData: RowData[] = [{ id: '2', name: 'Jane Doe', age: 25 }];
+
+    render(
+      <table>
+        <tbody>
+          <DataGridRow
+            rowData={rowData}
+            columns={columns}
+            onDeleteRow={vi.fn()}
+            subRows={subRowData}
+          />
+        </tbody>
+      </table>
+    );
+
+    const subRowCell = screen.getByText('Jane Doe').closest('td');
+    expect(subRowCell).toHaveClass(/subrowCell/i);
   });
 });

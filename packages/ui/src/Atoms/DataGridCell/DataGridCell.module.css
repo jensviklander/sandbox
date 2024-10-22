@@ -8,3 +8,7 @@
 .borderless {
   border: none;
 }
+
+.subRowCell {
+  padding-left: 30px;
+}

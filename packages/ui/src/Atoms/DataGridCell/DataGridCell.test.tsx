@@ -109,4 +109,53 @@ describe('DataGridCell Component', () => {
     const cell = container.querySelector('td');
     expect(cell).not.toHaveClass(styles.borderless);
   });
+
+  it('should apply the subRowCell class when isSubRow is true', () => {
+    const { container } = render(
+      <table>
+        <tbody>
+          <tr>
+            <DataGridCell width={150} isSubRow={true}>
+              SubRow Content
+            </DataGridCell>
+          </tr>
+        </tbody>
+      </table>
+    );
+
+    const cell = container.querySelector('td');
+    expect(cell).toHaveClass(styles.subRowCell);
+  });
+
+  it('should not apply the subRowCell class when isSubRow is false', () => {
+    const { container } = render(
+      <table>
+        <tbody>
+          <tr>
+            <DataGridCell width={150} isSubRow={false}>
+              Regular Content
+            </DataGridCell>
+          </tr>
+        </tbody>
+      </table>
+    );
+
+    const cell = container.querySelector('td');
+    expect(cell).not.toHaveClass(styles.subRowCell);
+  });
+
+  it('should not apply the subRowCell class when isSubRow is not provided', () => {
+    const { container } = render(
+      <table>
+        <tbody>
+          <tr>
+            <DataGridCell width={150}>Regular Content</DataGridCell>
+          </tr>
+        </tbody>
+      </table>
+    );
+
+    const cell = container.querySelector('td');
+    expect(cell).not.toHaveClass(styles.subRowCell);
+  });
 });

@@ -76,6 +76,80 @@ const columns: ExtendedColumnDef<Person, unknown>[] = [
   }
 ];
 
+type Task = {
+  id: string;
+  name: string;
+  status: 'Pending' | 'In Progress' | 'Completed';
+};
+
+type Project = {
+  id: string;
+  name: string;
+  tasks: Task[];
+};
+
+const projectData: (Project | Task)[] = [
+  {
+    id: 'project-1',
+    name: 'Website Redesign',
+    tasks: [
+      { id: 'task-1', name: 'Create Wireframes', status: 'Completed' },
+      { id: 'task-2', name: 'Design UI', status: 'In Progress' },
+      { id: 'task-3', name: 'Develop Frontend', status: 'Pending' }
+    ]
+  },
+  {
+    id: 'project-2',
+    name: 'Mobile App Development',
+    tasks: [
+      { id: 'task-4', name: 'Setup Backend', status: 'Completed' },
+      { id: 'task-5', name: 'Develop Mobile App', status: 'In Progress' }
+    ]
+  },
+  {
+    id: 'project-3',
+    name: 'Marketing Campaign',
+    tasks: [
+      { id: 'task-6', name: 'Plan Social Media', status: 'Pending' },
+      { id: 'task-7', name: 'Create Ads', status: 'In Progress' }
+    ]
+  },
+  { id: 'task-8', name: 'Bug Fix', status: 'Completed' },
+  { id: 'task-9', name: 'Code Review', status: 'Pending' }
+];
+
+const projectColumns: ExtendedColumnDef<Project | Task, unknown>[] = [
+  {
+    id: 'name',
+    accessorKey: 'name',
+    header: 'Name',
+    type: 'string',
+    width: 200,
+    cell: (info) => {
+      const { row } = info;
+      if ('tasks' in row.original) {
+        return <strong>{info.getValue<string>()}</strong>;
+      } else {
+        return (
+          <span style={{ paddingLeft: '20px' }}>{info.getValue<string>()}</span> // Task with indentation
+        );
+      }
+    }
+  },
+  {
+    id: 'status',
+    accessorKey: 'status',
+    header: 'Status',
+    type: 'string',
+    cell: (info) => {
+      if ('tasks' in info.row.original) {
+        return null;
+      }
+      return info.getValue<string>();
+    }
+  }
+];
+
 const Template: StoryFn<React.ComponentProps<typeof DataGrid<Person>>> = (
   args
 ) => {
@@ -99,6 +173,39 @@ const Template: StoryFn<React.ComponentProps<typeof DataGrid<Person>>> = (
       selectable={args.selectable}
       selectedRows={selectedRows}
       onSelectRow={handleSelectRow}
+    />
+  );
+};
+
+const GroupedTemplate: StoryFn<
+  React.ComponentProps<typeof DataGrid<Project>>
+> = (args) => {
+  const [selectedRows, setSelectedRows] = useState<string[]>([]);
+
+  const handleSelectRow = (rowId: string, checked: boolean) => {
+    setSelectedRows((prevSelected) => {
+      if (checked) {
+        return [...prevSelected, rowId];
+      } else {
+        return prevSelected.filter((id) => id !== rowId);
+      }
+    });
+  };
+
+  return (
+    <DataGrid
+      {...args}
+      data={args.data || projectData}
+      columns={projectColumns}
+      selectable={args.selectable}
+      selectedRows={selectedRows}
+      onSelectRow={handleSelectRow}
+      getSubRows={(row: Project | Task) => {
+        if ('tasks' in row) {
+          return row.tasks;
+        }
+        return undefined;
+      }}
     />
   );
 };
@@ -153,6 +260,11 @@ Empty.args = {
 export const Borderless = Template.bind({});
 Borderless.args = {
   borderless: true
+};
+
+export const WithGroups = GroupedTemplate.bind({});
+WithGroups.args = {
+  title: 'Project and Task List'
 };
 
 export const AllFeaturesOn = Template.bind({});
