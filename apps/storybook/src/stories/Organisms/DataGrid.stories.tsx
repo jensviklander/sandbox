@@ -267,6 +267,12 @@ WithGroups.args = {
   title: 'Project and Task List'
 };
 
+export const WithSelectableGroups = GroupedTemplate.bind({});
+WithSelectableGroups.args = {
+  title: 'Project and Task List',
+  selectable: true
+};
+
 export const AllFeaturesOn = Template.bind({});
 AllFeaturesOn.args = {
   title: 'Team Members',

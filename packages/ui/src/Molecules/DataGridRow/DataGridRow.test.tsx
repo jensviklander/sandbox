@@ -16,6 +16,10 @@ describe('DataGridRow Component', () => {
   ];
 
   const rowData: RowData = { id: '1', name: 'John Doe', age: 30 };
+  const subRowData: RowData[] = [{ id: '2', name: 'Jane Doe', age: 25 }];
+
+  const selectedRowsInternal: string[] = [];
+  const handleRowSelectChange = vi.fn();
 
   it('should render the row with the correct data', () => {
     render(
@@ -25,6 +29,8 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columns}
             onDeleteRow={vi.fn()}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
           />
         </tbody>
       </table>
@@ -50,6 +56,8 @@ describe('DataGridRow Component', () => {
             selectable={true}
             isSelected={false}
             onSelectRow={handleSelectRow}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
           />
         </tbody>
       </table>
@@ -73,6 +81,8 @@ describe('DataGridRow Component', () => {
             columns={columns}
             onDeleteRow={handleDeleteRow}
             showDeleteButton={true}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
           />
         </tbody>
       </table>
@@ -93,6 +103,8 @@ describe('DataGridRow Component', () => {
             columns={columns}
             onDeleteRow={vi.fn()}
             showDeleteButton={false}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
           />
         </tbody>
       </table>
@@ -110,6 +122,8 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columns}
             onDeleteRow={vi.fn()}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
           />
         </tbody>
       </table>
@@ -137,6 +151,8 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columnsWithAccessorFn}
             onDeleteRow={vi.fn()}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
           />
         </tbody>
       </table>
@@ -158,13 +174,14 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columnsWithoutAccessor}
             onDeleteRow={vi.fn()}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
           />
         </tbody>
       </table>
     );
 
     const allCells = screen.getAllByRole('cell');
-
     const customCell = allCells[0];
     expect(customCell).toBeEmptyDOMElement();
   });
@@ -181,13 +198,14 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columnsWithoutId}
             onDeleteRow={vi.fn()}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
           />
         </tbody>
       </table>
     );
 
     const allCells = screen.getAllByRole('cell');
-
     expect(allCells).toHaveLength(2);
     expect(allCells[0]).toBeInTheDocument();
   });
@@ -204,6 +222,8 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columnsWithWidth}
             onDeleteRow={vi.fn()}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
           />
         </tbody>
       </table>
@@ -225,6 +245,8 @@ describe('DataGridRow Component', () => {
             rowData={rowData}
             columns={columnsWithoutWidth}
             onDeleteRow={vi.fn()}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
           />
         </tbody>
       </table>
@@ -245,6 +267,8 @@ describe('DataGridRow Component', () => {
             selectable={true}
             isSelected={false}
             borderless={true}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
           />
         </tbody>
       </table>
@@ -267,6 +291,8 @@ describe('DataGridRow Component', () => {
             onDeleteRow={vi.fn()}
             showDeleteButton={false}
             borderless={false}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
           />
         </tbody>
       </table>
@@ -286,6 +312,8 @@ describe('DataGridRow Component', () => {
             onDeleteRow={vi.fn()}
             showDeleteButton={true}
             borderless={true}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
           />
         </tbody>
       </table>
@@ -309,6 +337,8 @@ describe('DataGridRow Component', () => {
             columns={columns}
             onDeleteRow={vi.fn()}
             subRows={subRowData}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
           />
         </tbody>
       </table>
@@ -332,6 +362,8 @@ describe('DataGridRow Component', () => {
             columns={columns}
             onDeleteRow={vi.fn()}
             subRows={subRowData}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
           />
         </tbody>
       </table>
@@ -339,5 +371,63 @@ describe('DataGridRow Component', () => {
 
     const subRowCell = screen.getByText('Jane Doe').closest('td');
     expect(subRowCell).toHaveClass(/subrowCell/i);
+  });
+
+  it('should call handleRowSelectChange when a sub-row is selected', () => {
+    const handleRowSelectChange = vi.fn();
+    const selectedRowsInternal: string[] = [];
+
+    render(
+      <table>
+        <tbody>
+          <DataGridRow
+            rowData={rowData}
+            columns={columns}
+            onDeleteRow={vi.fn()}
+            selectable={true}
+            isSelected={false}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
+            subRows={subRowData}
+          />
+        </tbody>
+      </table>
+    );
+
+    const checkboxes = screen.getAllByRole('checkbox');
+    const subRowCheckbox = checkboxes[1];
+    expect(subRowCheckbox).toBeInTheDocument();
+
+    fireEvent.click(subRowCheckbox);
+    expect(handleRowSelectChange).toHaveBeenCalledWith('2', true, false);
+  });
+
+  it('should call handleRowSelectChange when a sub-row is deselected', () => {
+    const handleRowSelectChange = vi.fn();
+    const selectedRowsInternal: string[] = ['2'];
+
+    render(
+      <table>
+        <tbody>
+          <DataGridRow
+            rowData={rowData}
+            columns={columns}
+            onDeleteRow={vi.fn()}
+            selectable={true}
+            isSelected={false}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
+            subRows={subRowData}
+          />
+        </tbody>
+      </table>
+    );
+
+    const checkboxes = screen.getAllByRole('checkbox');
+    const subRowCheckbox = checkboxes[1];
+    expect(subRowCheckbox).toBeInTheDocument();
+
+    fireEvent.click(subRowCheckbox);
+    expect(handleRowSelectChange).toHaveBeenCalledWith('2', false, false);
   });
 });

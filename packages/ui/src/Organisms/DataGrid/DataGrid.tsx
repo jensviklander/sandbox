@@ -34,7 +34,7 @@ interface DataGridProps<T extends { id: string }> {
   getSubRows?: (row: T) => T[] | undefined;
 }
 
-// TODO: Fix group selection
+// FIXME: Improve branch coverage
 export default function DataGrid<T extends { id: string }>({
   title,
   data,
@@ -87,6 +87,21 @@ export default function DataGrid<T extends { id: string }>({
     setTotalPages(Math.ceil(tableData.length / pageSize));
   }, [tableData, pageSize]);
 
+  const collectAllRowIds = () => {
+    return table
+      .getRowModel()
+      .rows.flatMap((row) => [
+        row.id,
+        ...(row.subRows?.map((subRow) => subRow.id) || [])
+      ]);
+  };
+
+  const collectRowAndSubRowIds = <T extends { id: string; subRows?: T[] }>(
+    row: T
+  ): string[] => {
+    return [row.id, ...(row.subRows?.map((subRow) => subRow.id) || [])];
+  };
+
   const handlePageChange = (newPageIndex: number) => {
     setSelectedRowsInternal([]);
     setPageIndex(newPageIndex);
@@ -94,25 +109,69 @@ export default function DataGrid<T extends { id: string }>({
   };
 
   const handleSelectAllChange = (checked: boolean) => {
-    if (checked) {
-      const allRowIds = table.getRowModel().rows.map((row) => row.id);
-      setSelectedRowsInternal(allRowIds);
-      allRowIds.forEach((id) => onSelectRow && onSelectRow(id, true));
-    } else {
-      setSelectedRowsInternal([]);
-      selectedRowsInternal.forEach(
-        (id) => onSelectRow && onSelectRow(id, false)
-      );
-    }
+    const allRowIds = collectAllRowIds();
+
+    setSelectedRowsInternal(checked ? allRowIds : []);
+    allRowIds.forEach((id) => onSelectRow && onSelectRow(id, checked));
   };
 
-  const handleRowSelectChange = (rowId: string, checked: boolean) => {
-    if (checked) {
-      setSelectedRowsInternal((prev) => [...prev, rowId]);
-      onSelectRow && onSelectRow(rowId, true);
-    } else {
-      setSelectedRowsInternal((prev) => prev.filter((id) => id !== rowId));
-      onSelectRow && onSelectRow(rowId, false);
+  const isAllRowsSelected = () => {
+    const allRowIds = collectAllRowIds();
+    return (
+      allRowIds.length > 0 &&
+      allRowIds.every((id) => selectedRowsInternal.includes(id))
+    );
+  };
+
+  const isSelectAllChecked = isAllRowsSelected();
+
+  const handleRowSelectChange = (
+    rowId: string,
+    checked: boolean,
+    isParent: boolean,
+    subRowIds: string[] = []
+  ) => {
+    setSelectedRowsInternal((prevSelectedRows) => {
+      const updatedSelection = new Set(prevSelectedRows);
+
+      if (checked) {
+        updatedSelection.add(rowId);
+        subRowIds.forEach((subRowId) => updatedSelection.add(subRowId));
+      } else {
+        updatedSelection.delete(rowId);
+        subRowIds.forEach((subRowId) => updatedSelection.delete(subRowId));
+      }
+
+      onSelectRow && onSelectRow(rowId, checked);
+      subRowIds.forEach(
+        (subRowId) => onSelectRow && onSelectRow(subRowId, checked)
+      );
+
+      return Array.from(updatedSelection);
+    });
+
+    if (!isParent) {
+      const parentRow = table
+        .getRowModel()
+        .rows.find((row) => row.subRows?.some((subRow) => subRow.id === rowId));
+
+      if (parentRow) {
+        setSelectedRowsInternal((currentSelectedRows) => {
+          const allSiblingsSelected = parentRow.subRows.every((subRow) =>
+            currentSelectedRows.includes(subRow.id)
+          );
+
+          if (allSiblingsSelected && checked) {
+            onSelectRow && onSelectRow(parentRow.id, true);
+            return [...currentSelectedRows, parentRow.id];
+          } else if (!allSiblingsSelected && !checked) {
+            onSelectRow && onSelectRow(parentRow.id, false);
+            return currentSelectedRows.filter((id) => id !== parentRow.id);
+          }
+
+          return currentSelectedRows;
+        });
+      }
     }
   };
 
@@ -198,9 +257,7 @@ export default function DataGrid<T extends { id: string }>({
               sorting={sorting}
               onSelectAll={handleSelectAllChange}
               onSortChange={handleSortChange}
-              isSelectAllChecked={
-                selectedRowsInternal.length === table.getRowModel().rows.length
-              }
+              isSelectAllChecked={isSelectAllChecked}
               borderless={borderless}
               showMultiDelete={
                 showDeleteButton && selectedRowsInternal.length > 1
@@ -223,10 +280,17 @@ export default function DataGrid<T extends { id: string }>({
                   selectable={selectable}
                   isSelected={selectedRowsInternal.includes(row.id)}
                   onSelectRow={(checked) =>
-                    handleRowSelectChange(row.id, checked)
+                    handleRowSelectChange(
+                      row.id,
+                      checked,
+                      true,
+                      collectRowAndSubRowIds(row)
+                    )
                   }
                   borderless={borderless}
                   subRows={row.subRows?.map((subRow) => subRow.original)}
+                  selectedRowsInternal={selectedRowsInternal}
+                  handleRowSelectChange={handleRowSelectChange}
                 />
               ))
           ) : (

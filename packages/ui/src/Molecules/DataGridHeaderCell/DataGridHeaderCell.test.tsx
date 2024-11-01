@@ -205,4 +205,19 @@ describe('DataGridHeaderCell Component', () => {
 
     expect(container).toBeInTheDocument();
   });
+
+  it('should render no sort icon when sortOrder is "none" and sortable is false', () => {
+    render(
+      <table>
+        <thead>
+          <tr>
+            <DataGridHeaderCell label="Name" sortable={false} />
+          </tr>
+        </thead>
+      </table>
+    );
+
+    const sortButton = screen.queryByRole('button');
+    expect(sortButton).not.toBeInTheDocument();
+  });
 });

@@ -15,6 +15,13 @@ interface DataGridRowProps<T extends { id: string }> {
   borderless?: boolean;
   subRows?: T[];
   isSubRow?: boolean;
+  selectedRowsInternal: string[];
+  handleRowSelectChange: (
+    rowId: string,
+    checked: boolean,
+    isParent: boolean,
+    subRowIds?: string[]
+  ) => void;
 }
 
 export const DataGridRow = <T extends { id: string }>({
@@ -27,7 +34,9 @@ export const DataGridRow = <T extends { id: string }>({
   showDeleteButton = false,
   borderless = false,
   subRows = [],
-  isSubRow = false
+  isSubRow = false,
+  selectedRowsInternal,
+  handleRowSelectChange
 }: DataGridRowProps<T>) => {
   return (
     <>
@@ -88,12 +97,16 @@ export const DataGridRow = <T extends { id: string }>({
             columns={columns}
             onDeleteRow={onDeleteRow}
             selectable={selectable}
-            isSelected={isSelected}
-            onSelectRow={onSelectRow}
+            isSelected={selectedRowsInternal.includes(subRow.id)}
+            onSelectRow={(checked) =>
+              handleRowSelectChange(subRow.id, checked, false)
+            }
             showDeleteButton={showDeleteButton}
             borderless={borderless}
             subRows={[]}
             isSubRow={true}
+            selectedRowsInternal={selectedRowsInternal}
+            handleRowSelectChange={handleRowSelectChange}
           />
         ))}
     </>

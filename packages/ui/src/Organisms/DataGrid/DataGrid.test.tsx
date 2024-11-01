@@ -34,6 +34,28 @@ describe('DataGrid Component', () => {
     { id: '3', name: 'Charlie', age: 35 }
   ];
 
+  const hierarchicalData = [
+    {
+      id: '1',
+      name: 'Project A',
+      age: null,
+      subRows: [
+        { id: '1.1', name: 'Task 1', age: null },
+        { id: '1.2', name: 'Task 2', age: null }
+      ]
+    },
+    {
+      id: '2',
+      name: 'Project B',
+      age: null,
+      subRows: [
+        { id: '2.1', name: 'Task 1', age: null },
+        { id: '2.2', name: 'Task 2', age: null }
+      ]
+    },
+    { id: '3', name: 'Project C', age: null }
+  ];
+
   it('should render the title and data correctly', () => {
     render(
       <DataGrid
@@ -531,5 +553,349 @@ describe('DataGrid Component', () => {
     fireEvent.click(deleteButtons[0]);
 
     expect(handleDeleteSelected).toHaveBeenCalled();
+  });
+
+  it('should select all rows including those with empty or undefined subRows', async () => {
+    const handleSelectRow = vi.fn();
+    const hierarchicalDataWithEmptySubRows = [
+      {
+        id: '1',
+        name: 'Project A',
+        subRows: []
+      },
+      {
+        id: '2',
+        name: 'Project B',
+        subRows: undefined
+      }
+    ];
+
+    render(
+      <DataGrid
+        data={hierarchicalDataWithEmptySubRows}
+        columns={columns}
+        selectable={true}
+        selectedRows={[]}
+        onSelectRow={handleSelectRow}
+        getSubRows={(row) => row.subRows}
+      />
+    );
+
+    const selectAllCheckbox = screen.getAllByRole('checkbox')[0];
+    fireEvent.click(selectAllCheckbox);
+
+    await waitFor(() => {
+      expect(handleSelectRow).toHaveBeenCalledWith('1', true);
+      expect(handleSelectRow).toHaveBeenCalledWith('2', true);
+    });
+  });
+
+  it('should reset sorting to none when no sorting order is applied', async () => {
+    const { container } = render(
+      <DataGrid
+        data={data}
+        columns={columns}
+        enableSorting={true}
+        selectable={false}
+      />
+    );
+
+    const nameHeader = screen.getByText('Name').closest('th') as HTMLElement;
+    const sortIcon = within(nameHeader).getByLabelText('sort');
+
+    await act(async () => {
+      fireEvent.click(sortIcon);
+    });
+
+    await waitFor(() => {
+      const rows = container.querySelectorAll('tbody tr');
+      expect(rows[0].textContent).toContain('Alice');
+    });
+
+    await act(async () => {
+      fireEvent.click(sortIcon);
+    });
+
+    await waitFor(() => {
+      const rows = container.querySelectorAll('tbody tr');
+      expect(rows[0].textContent).toContain('Alice');
+    });
+  });
+
+  it('should select a non-parent row', () => {
+    const handleSelectRow = vi.fn();
+
+    render(
+      <DataGrid
+        data={hierarchicalData}
+        columns={columns}
+        selectable={true}
+        selectedRows={[]}
+        onSelectRow={handleSelectRow}
+        getSubRows={(row) => row.subRows}
+      />
+    );
+
+    const subRowCheckbox = screen.getAllByRole('checkbox')[2];
+    fireEvent.click(subRowCheckbox);
+
+    expect(handleSelectRow).toHaveBeenCalledWith('1.1', true);
+  });
+
+  it('should deselect a non-parent row', () => {
+    const handleSelectRow = vi.fn();
+    const selectedRows = ['1.1'];
+
+    render(
+      <DataGrid
+        data={hierarchicalData}
+        columns={columns}
+        selectable={true}
+        selectedRows={selectedRows}
+        onSelectRow={handleSelectRow}
+        getSubRows={(row) => row.subRows}
+      />
+    );
+
+    const subRowCheckbox = screen.getAllByRole('checkbox')[2];
+    fireEvent.click(subRowCheckbox);
+
+    expect(handleSelectRow).toHaveBeenCalledWith('1.1', false);
+  });
+
+  it('triggers onSelectRow for each child when parent row is selected', async () => {
+    const handleSelectRow = vi.fn();
+
+    render(
+      <DataGrid
+        data={hierarchicalData}
+        columns={columns}
+        selectable={true}
+        selectedRows={[]}
+        onSelectRow={handleSelectRow}
+        getSubRows={(row) => row.subRows}
+      />
+    );
+
+    const parentCheckbox = screen.getAllByRole('checkbox')[1];
+    fireEvent.click(parentCheckbox);
+
+    await waitFor(() => {
+      expect(handleSelectRow).toHaveBeenCalledWith('1', true);
+      expect(handleSelectRow).toHaveBeenCalledWith('1.1', true);
+      expect(handleSelectRow).toHaveBeenCalledWith('1.2', true);
+    });
+  });
+
+  it('deselects all child rows when parent row is deselected', async () => {
+    const handleSelectRow = vi.fn();
+
+    render(
+      <DataGrid
+        data={hierarchicalData}
+        columns={columns}
+        selectable={true}
+        selectedRows={['1', '1.1', '1.2']}
+        onSelectRow={handleSelectRow}
+        getSubRows={(row) => row.subRows}
+      />
+    );
+
+    const parentCheckbox = screen.getAllByRole('checkbox')[1];
+    fireEvent.click(parentCheckbox);
+
+    await waitFor(() => {
+      expect(handleSelectRow).toHaveBeenCalledWith('1', false);
+      expect(handleSelectRow).toHaveBeenCalledWith('1.1', false);
+      expect(handleSelectRow).toHaveBeenCalledWith('1.2', false);
+    });
+  });
+
+  it('selects the parent row only when all child rows are selected', async () => {
+    const handleSelectRow = vi.fn();
+
+    render(
+      <DataGrid
+        data={hierarchicalData}
+        columns={columns}
+        selectable={true}
+        selectedRows={[]}
+        onSelectRow={handleSelectRow}
+        getSubRows={(row) => row.subRows}
+      />
+    );
+
+    const firstChildCheckbox = screen.getAllByRole('checkbox')[2];
+    fireEvent.click(firstChildCheckbox);
+
+    await waitFor(() => {
+      expect(handleSelectRow).toHaveBeenCalledWith('1.1', true);
+    });
+    expect(handleSelectRow).toHaveBeenCalledTimes(1);
+
+    const secondChildCheckbox = screen.getAllByRole('checkbox')[3];
+    fireEvent.click(secondChildCheckbox);
+
+    await waitFor(() => {
+      expect(handleSelectRow).toHaveBeenCalledWith('1.2', true);
+      expect(handleSelectRow).toHaveBeenCalledWith('1', true);
+    });
+
+    expect(handleSelectRow.mock.calls).toEqual([
+      ['1.1', true],
+      ['1.2', true],
+      ['1', true]
+    ]);
+  });
+
+  it('deselects the parent row when a single child row is deselected', async () => {
+    const handleSelectRow = vi.fn();
+
+    render(
+      <DataGrid
+        data={hierarchicalData}
+        columns={columns}
+        selectable={true}
+        selectedRows={['1', '1.1', '1.2']}
+        onSelectRow={handleSelectRow}
+        getSubRows={(row) => row.subRows}
+      />
+    );
+
+    const firstChildCheckbox = screen.getAllByRole('checkbox')[2];
+    fireEvent.click(firstChildCheckbox);
+
+    await waitFor(() => {
+      expect(handleSelectRow).toHaveBeenCalledWith('1', false);
+      expect(handleSelectRow).toHaveBeenCalledWith('1.1', false);
+    });
+  });
+
+  it('should collect all row IDs even when some rows have empty or undefined subRows', () => {
+    const handleSelectRow = vi.fn();
+
+    const dataWithEmptyAndUndefinedSubRows = [
+      { id: '1', name: 'Project A', subRows: [] },
+      { id: '2', name: 'Project B', subRows: undefined },
+      { id: '3', name: 'Project C', subRows: [{ id: '3.1', name: 'Task C1' }] }
+    ];
+
+    render(
+      <DataGrid
+        data={dataWithEmptyAndUndefinedSubRows}
+        columns={columns}
+        selectable={true}
+        selectedRows={[]}
+        onSelectRow={handleSelectRow}
+        getSubRows={(row) => row.subRows}
+      />
+    );
+
+    const selectAllCheckbox = screen.getAllByRole('checkbox')[0];
+    fireEvent.click(selectAllCheckbox);
+
+    waitFor(() => {
+      expect(handleSelectRow).toHaveBeenCalledWith('1', true);
+      expect(handleSelectRow).toHaveBeenCalledWith('2', true);
+      expect(handleSelectRow).toHaveBeenCalledWith('3', true);
+      expect(handleSelectRow).toHaveBeenCalledWith('3.1', true);
+    });
+  });
+
+  it('should handle row selection correctly when subRowIds is empty or undefined', () => {
+    const handleSelectRow = vi.fn();
+
+    const dataWithSingleRow = [
+      { id: '1', name: 'Single Project', subRows: undefined }
+    ];
+
+    render(
+      <DataGrid
+        data={dataWithSingleRow}
+        columns={columns}
+        selectable={true}
+        selectedRows={[]}
+        onSelectRow={handleSelectRow}
+        getSubRows={(row) => row.subRows}
+      />
+    );
+
+    const rowCheckbox = screen.getAllByRole('checkbox')[1];
+    fireEvent.click(rowCheckbox);
+
+    waitFor(() => {
+      expect(handleSelectRow).toHaveBeenCalledWith('1', true);
+      expect(handleSelectRow).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  it('collects all row IDs for various subRows configurations', () => {
+    const handleSelectRow = vi.fn();
+
+    const complexData = [
+      { id: '1', name: 'Project X', subRows: [] },
+      { id: '2', name: 'Project Y', subRows: undefined },
+      {
+        id: '3',
+        name: 'Project Z',
+        subRows: [
+          {
+            id: '3.1',
+            name: 'Task Z1',
+            subRows: [{ id: '3.1.1', name: 'Subtask Z1-1' }]
+          }
+        ]
+      }
+    ];
+
+    render(
+      <DataGrid
+        data={complexData}
+        columns={columns}
+        selectable={true}
+        selectedRows={[]}
+        onSelectRow={handleSelectRow}
+        getSubRows={(row) => row.subRows}
+      />
+    );
+
+    const selectAllCheckbox = screen.getAllByRole('checkbox')[0];
+    fireEvent.click(selectAllCheckbox);
+
+    waitFor(() => {
+      expect(handleSelectRow).toHaveBeenCalledWith('1', true);
+      expect(handleSelectRow).toHaveBeenCalledWith('2', true);
+      expect(handleSelectRow).toHaveBeenCalledWith('3', true);
+      expect(handleSelectRow).toHaveBeenCalledWith('3.1', true);
+      expect(handleSelectRow).toHaveBeenCalledWith('3.1.1', true);
+    });
+  });
+
+  it('deselects parent row when any child row is deselected', async () => {
+    const handleSelectRow = vi.fn();
+
+    render(
+      <DataGrid
+        data={hierarchicalData}
+        columns={columns}
+        selectable={true}
+        selectedRows={['1', '1.1', '1.2']}
+        onSelectRow={handleSelectRow}
+        getSubRows={(row) => row.subRows}
+      />
+    );
+
+    const firstChildCheckbox = screen.getAllByRole('checkbox')[2];
+    fireEvent.click(firstChildCheckbox);
+
+    await waitFor(() => {
+      expect(handleSelectRow).toHaveBeenCalledWith('1.1', false);
+      expect(handleSelectRow).toHaveBeenCalledWith('1', false);
+    });
+
+    expect(handleSelectRow.mock.calls).toEqual([
+      ['1.1', false],
+      ['1', false]
+    ]);
   });
 });

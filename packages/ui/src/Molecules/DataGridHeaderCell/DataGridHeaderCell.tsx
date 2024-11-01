@@ -4,7 +4,7 @@ import styles from './DataGridHeaderCell.module.css';
 interface DataGridHeaderCellProps {
   label: string;
   sortable?: boolean;
-  sortOrder: 'asc' | 'desc' | 'none';
+  sortOrder?: 'asc' | 'desc' | 'none';
   onSort?: () => void;
   width?: number;
   borderless?: boolean;
