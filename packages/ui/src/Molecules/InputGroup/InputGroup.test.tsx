@@ -58,8 +58,6 @@ describe('InputGroup Component', () => {
       />
     );
 
-    screen.debug();
-
     const inputElement = screen.getByRole('textbox');
     expect(inputElement).toBeRequired();
     expect(inputElement).toHaveAttribute('aria-required', 'true');
