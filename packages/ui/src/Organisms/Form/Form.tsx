@@ -5,9 +5,9 @@ import { RadioGroup } from '../../Molecules/RadioGroup/RadioGroup';
 import { Button } from '../../Atoms/Button/Button';
 import styles from './Form.module.css';
 
-type FieldType = 'text' | 'email' | 'password' | 'checkbox' | 'radio';
+export type FieldType = 'text' | 'email' | 'password' | 'checkbox' | 'radio';
 
-interface Field {
+export interface Field {
   name: string;
   label: string;
   type: FieldType;

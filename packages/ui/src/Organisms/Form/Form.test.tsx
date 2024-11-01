@@ -1,12 +1,12 @@
 import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { Form } from './Form';
+import { Field, FieldType, Form } from './Form';
 
 vi.mock('../../Molecules/InputGroup/InputGroup', () => ({
-  InputGroup: ({ id, labelText, error, onChange, onBlur }: any) => (
+  InputGroup: ({ id, labelText, error, onChange, onBlur, type }: any) => (
     <div data-testid={`input-group-${id}`}>
       <span>{labelText}</span>
       <input
-        type="text"
+        type={type}
         placeholder={labelText}
         onChange={(e) => onChange(e.target.value)}
         onBlur={onBlur}
@@ -300,5 +300,31 @@ describe('Form Component', () => {
 
     expect(passwordInput).toHaveValue('password123');
     expect(screen.queryByTestId('error-password')).not.toBeInTheDocument();
+  });
+
+  it('should gracefully handle an unsupported field type', () => {
+    const unsupportedField: Field = {
+      name: 'unsupportedField',
+      label: 'Unsupported Field',
+      type: 'unsupported' as FieldType
+    };
+
+    render(
+      <Form
+        fields={[unsupportedField]}
+        onSubmit={mockOnSubmit}
+        buttonText="Submit"
+      />
+    );
+
+    expect(
+      screen.queryByTestId('input-group-unsupportedField')
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId('checkbox-group-unsupportedField')
+    ).not.toBeInTheDocument();
+    expect(
+      screen.queryByTestId('radio-group-unsupportedField')
+    ).not.toBeInTheDocument();
   });
 });
